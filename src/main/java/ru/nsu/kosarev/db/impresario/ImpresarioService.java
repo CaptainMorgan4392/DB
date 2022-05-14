@@ -6,6 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.util.Pair;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -38,6 +43,13 @@ public class ImpresarioService {
 
     @Autowired
     private ImpresarioJDBCRepository impresarioJDBCRepository;
+
+    static java.util.function.Predicate<ImpresarioArtistProjection> distinctByPairOfKeys(
+        java.util.function.Function<ImpresarioArtistProjection, Pair<Integer, Integer>> pairExtractor
+    ) {
+        Set<Pair<Integer, Integer>> seen = ConcurrentHashMap.newKeySet();
+        return (t) -> seen.add(pairExtractor.apply(t));
+    }
 
     boolean isAlreadyExists(ImpresarioDTO impresarioDTO) {
         return impresarioRepository.existsById(impresarioDTO.getId());
@@ -97,6 +109,7 @@ public class ImpresarioService {
         return partitionedStreams.map(
             impresarioArtistProjectionStream ->
                 impresarioArtistProjectionStream
+                    .filter(distinctByPairOfKeys(ImpresarioArtistProjection::getIds))
                     .map(it ->
                         new ArtistsOfAllImpresariosDTO(
                             it.getImpresarioName(),
@@ -114,7 +127,17 @@ public class ImpresarioService {
                             x.getArtistProjectionList().stream(),
                             y.getArtistProjectionList().stream()
                         ).collect(Collectors.toList())
-                    ))
+                    )).map(
+                        dto -> new ArtistsOfAllImpresariosDTO(
+                            dto.getImpresarioName(),
+                            dto.getImpresarioSurname(),
+                            dto.getImpresarioBirthDate(),
+                            dto.getArtistProjectionList()
+                                .stream()
+                                .filter(it -> it.getArtistName() != null)
+                                .collect(Collectors.toList())
+                        )
+                    )
         ).filter(Optional::isPresent).map(Optional::get).collect(Collectors.toList());
 
     }

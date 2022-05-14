@@ -3,6 +3,7 @@ package ru.nsu.kosarev.db.impresario.projections;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.util.Pair;
 
 @AllArgsConstructor
 @Getter
@@ -24,5 +25,12 @@ public class ImpresarioArtistProjection {
     private String artistSurname;
 
     private String artistBirthDate;
+
+    public Pair<Integer, Integer> getIds() {
+        return Pair.of(
+            this.getImpresarioId(),
+            this.getArtistId()
+        );
+    }
 
 }
