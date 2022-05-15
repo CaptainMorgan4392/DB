@@ -14,7 +14,6 @@ import ru.nsu.kosarev.db.artist.dto.ArtistDTO;
 import ru.nsu.kosarev.db.artist.dto.ArtistImpresarioJenreDto;
 import ru.nsu.kosarev.db.artist.dto.ArtistResponseDTO;
 import ru.nsu.kosarev.db.artist.projections.ArtistImpresarioJenreProjection;
-import ru.nsu.kosarev.db.artist.repository.ArtistJDBCRepository;
 import ru.nsu.kosarev.db.artist.sortingfilter.ArtistSearchParams;
 
 import java.util.List;
@@ -71,6 +70,16 @@ public class ArtistController {
     @GetMapping(value = "/artistWithImpresario/fetch")
     public List<ArtistImpresarioJenreProjection> getArtistWorkingWithImpresarioInJenre() {
         return artistService.getArtistWorkingWithImpresarioInJenre();
+    }
+
+    @PatchMapping(value = "/artistWithImpresario/update")
+    public void updateArtistWorkingWithImpresarioInJenre(@RequestBody ArtistImpresarioJenreDto artistImpresarioJenreDto) {
+
+    }
+
+    @DeleteMapping(value = "/artistWithImpresario/delete/{id}")
+    public void deleteArtistWorkingWithImpresarioInJenre(@PathVariable("id") Integer id) {
+
     }
 
 }

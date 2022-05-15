@@ -2,7 +2,7 @@ package ru.nsu.kosarev.db.impresario.dto;
 
 import lombok.Getter;
 import lombok.Setter;
-import ru.nsu.kosarev.db.impresario.projections.ImpresarioArtistProjection;
+import ru.nsu.kosarev.db.impresario.projection.ImpresarioArtistProjection;
 
 @Getter
 @Setter

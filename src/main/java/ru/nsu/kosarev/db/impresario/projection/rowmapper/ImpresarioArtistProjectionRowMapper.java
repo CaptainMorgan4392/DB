@@ -1,9 +1,9 @@
-package ru.nsu.kosarev.db.impresario.projections.rowmapper;
+package ru.nsu.kosarev.db.impresario.projection.rowmapper;
 
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.lang.Nullable;
 import ru.nsu.kosarev.db.common.utils.DateTimeFormatter;
-import ru.nsu.kosarev.db.impresario.projections.ImpresarioArtistProjection;
+import ru.nsu.kosarev.db.impresario.projection.ImpresarioArtistProjection;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

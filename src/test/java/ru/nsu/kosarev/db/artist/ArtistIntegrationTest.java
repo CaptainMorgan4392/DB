@@ -10,4 +10,12 @@ public class ArtistIntegrationTest {
     @Container
     private PostgreSQLContainer<?> postgreSQLContainer;
 
+    //create
+
+    //read
+
+    //update
+
+    //delete
+
 }

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.nsu.kosarev.db.impresario.dto.ArtistsOfAllImpresariosDTO;
 import ru.nsu.kosarev.db.impresario.dto.ImpresarioDTO;
 import ru.nsu.kosarev.db.impresario.dto.ImpresarioResponseDTO;
-import ru.nsu.kosarev.db.impresario.projections.ImpresarioArtistProjection;
+import ru.nsu.kosarev.db.impresario.projection.ImpresarioArtistProjection;
 import ru.nsu.kosarev.db.impresario.sortingfilter.ImpresarioSearchParams;
 
 import java.util.List;

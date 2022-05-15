@@ -1,4 +1,4 @@
-package ru.nsu.kosarev.db.impresario.projections;
+package ru.nsu.kosarev.db.impresario.projection;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

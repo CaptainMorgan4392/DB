@@ -7,12 +7,17 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 
 @Data
 @JsonDeserialize(builder = ArtistImpresarioJenreDto.ArtistImpresarioJenreDtoBuilder.class)
 @Builder
 @AllArgsConstructor(onConstructor=@__(@JsonCreator))
 public class ArtistImpresarioJenreDto {
+
+    @Nullable
+    @JsonProperty("id")
+    private Integer id;
 
     @NonNull
     @JsonProperty("artistId")

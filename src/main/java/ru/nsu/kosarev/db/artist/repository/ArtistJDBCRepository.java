@@ -7,9 +7,12 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import ru.nsu.kosarev.db.artist.dto.ArtistImpresarioJenreDto;
 import ru.nsu.kosarev.db.artist.projections.ArtistImpresarioJenreProjection;
+import ru.nsu.kosarev.db.artist.projections.ArtistProjection;
 import ru.nsu.kosarev.db.artist.projections.rowmappers.ArtistImpresarioJenreProjectionRowMapper;
+import ru.nsu.kosarev.db.artist.projections.rowmappers.ArtistProjectionRowMapper;
 
 import java.sql.PreparedStatement;
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -50,5 +53,53 @@ public class ArtistJDBCRepository {
             new ArtistImpresarioJenreProjectionRowMapper()
         );
     }
+
+    //Check for trigger working
+    public void updateArtistWithImpresarioInJenre(ArtistImpresarioJenreDto artistImpresarioJenreDto) {
+
+    }
+
+    //Check for trigger working
+
+    public void deleteArtistWithImpresarioInJenre(Integer artistId) {
+
+    }
+
+    //delete nmk
+
+    //2
+    public List<ArtistProjection> getArtistsInJenre(Integer jenreId) {
+        return jdbcTemplate.query(
+            "SELECT a.name AS artistName, " +
+                "a.surname AS artistSurname, " +
+                "a.birthDate AS artistDate " +
+                "FROM artist a " +
+                "INNER JOIN impresario_artist_jenre iaj on a.id = iaj.artist " +
+                "WHERE iaj.jenre = ?",
+            new ArtistProjectionRowMapper(),
+            jenreId
+        );
+    }
+
+    //10
+    public List<ArtistProjection> getArtistsNotTakingPartInPeriod(Date from, Date to) {
+        return jdbcTemplate.query(
+            "SELECT foundArtistId, commonArtistId FROM " +
+                "(SELECT x.id AS foundArtistId, y.id AS commonArtistId FROM " +
+                "(SELECT a.id FROM artist a " +
+                "INNER JOIN artist_event ae on a.id = ae.artist " +
+                "INNER JOIN event e on e.id = ae.event " +
+                "WHERE e.eventdate BETWEEN ? AND ?" +
+                ") AS x " +
+                "RIGHT JOIN LATERAL " +
+                "(SELECT * FROM artist a) AS y ON x.id = y.id) AS lateralJoined " +
+                "WHERE foundArtistId IS NULL",
+            new ArtistProjectionRowMapper(),
+            from,
+            to
+        );
+    }
+
+    //cross join
 
 }
