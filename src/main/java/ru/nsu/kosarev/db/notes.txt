@@ -1,33 +1,28 @@
-Починить транзакции!
+1) Транзакции!
 
-7) Запросы
-1: done
-2: done
-3: done
-4: done
-5: done
-6: done
-7: done
-8: done
-9: done
-10: done
-11: done
-12: later)
+2) Тесты
 
-crud для nmk : cr
+Crud:
 
-8) Тест запросов
-1:
-2:
-3:
-4:
-5:
-6:
-7:
-8:
-9:
-10:
-11:
-12:
+Artist -
+Building -
+Event -
+Impresario -
+Organizer -
 
-crud для nmk :
+Crud nmk:
+
+Specific:
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+
+3) spring query method

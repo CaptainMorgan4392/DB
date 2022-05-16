@@ -13,6 +13,7 @@ import ru.nsu.kosarev.db.impresario.dto.ArtistsOfAllImpresariosDTO;
 import ru.nsu.kosarev.db.impresario.dto.ImpresarioDTO;
 import ru.nsu.kosarev.db.impresario.dto.ImpresarioResponseDTO;
 import ru.nsu.kosarev.db.impresario.projection.ImpresarioArtistProjection;
+import ru.nsu.kosarev.db.impresario.projection.ImpresarioProjection;
 import ru.nsu.kosarev.db.impresario.sortingfilter.ImpresarioSearchParams;
 
 import java.util.List;
@@ -69,6 +70,16 @@ public class ImpresarioController {
     @GetMapping(value = "/getArtistsOfAllImpresarios")
     public List<ArtistsOfAllImpresariosDTO> getArtistsOfAllImpresarios() {
         return impresarioService.getArtistsOfAllImpresarios();
+    }
+
+    @GetMapping(value = "/getImpresariosOfArtist/{id}")
+    public List<ImpresarioProjection> getImpresariosOfArtist(@PathVariable("id") Integer artistId) {
+        return impresarioService.getImpresariosOfArtist(artistId);
+    }
+
+    @GetMapping(value = "/getImpresariosInJenre/{id}")
+    public List<ImpresarioProjection> getImpresariosInJenre(@PathVariable("id") Integer jenreId) {
+        return impresarioService.getImpresariosInJenre(jenreId);
     }
 
 }

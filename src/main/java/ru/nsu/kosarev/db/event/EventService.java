@@ -12,6 +12,11 @@ import org.springframework.stereotype.Service;
 import ru.nsu.kosarev.db.building.repository.BuildingRepository;
 import ru.nsu.kosarev.db.event.dto.EventDTO;
 import ru.nsu.kosarev.db.event.dto.EventResponseDTO;
+import ru.nsu.kosarev.db.event.projection.ArtistWithPlaceProjection;
+import ru.nsu.kosarev.db.event.projection.EventProjection;
+import ru.nsu.kosarev.db.event.projection.rowmapper.ArtistWithPlaceProjectionRowMapper;
+import ru.nsu.kosarev.db.event.projection.rowmapper.EventProjectionRowMapper;
+import ru.nsu.kosarev.db.event.repository.EventJDBCRepository;
 import ru.nsu.kosarev.db.event.repository.EventRepository;
 import ru.nsu.kosarev.db.event.sortingfilter.EventSearchParams;
 
@@ -20,6 +25,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -30,6 +36,9 @@ public class EventService {
 
     @Autowired
     private EventRepository eventRepository;
+
+    @Autowired
+    private EventJDBCRepository eventJDBCRepository;
 
     @Autowired
     private BuildingRepository buildingRepository;
@@ -86,6 +95,18 @@ public class EventService {
 
     void deleteEvent(Integer artistId) {
         eventRepository.deleteById(artistId);
+    }
+
+    public List<EventProjection> getEventsInPeriodOrByOrganizer(Date from, Date to, Integer organizerId) {
+        return eventJDBCRepository.getEventsInPeriodOrByOrganizer(from, to, organizerId);
+    }
+
+    public List<ArtistWithPlaceProjection> getArtistsWithPlaces(Integer eventId) {
+        return eventJDBCRepository.getArtistsWithPlaces(eventId);
+    }
+
+    public List<EventProjection> getEventsInBuilding(Integer buildingId) {
+        return eventJDBCRepository.getEventsInBuilding(buildingId);
     }
 
     private Specification<Event> buildSpec(EventSearchParams eventSearchParams) {

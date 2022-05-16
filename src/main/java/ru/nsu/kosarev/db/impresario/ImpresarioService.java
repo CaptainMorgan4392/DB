@@ -15,6 +15,9 @@ import ru.nsu.kosarev.db.impresario.dto.ArtistsOfAllImpresariosDTO;
 import ru.nsu.kosarev.db.impresario.dto.ImpresarioDTO;
 import ru.nsu.kosarev.db.impresario.dto.ImpresarioResponseDTO;
 import ru.nsu.kosarev.db.impresario.projection.ImpresarioArtistProjection;
+import ru.nsu.kosarev.db.impresario.projection.ImpresarioProjection;
+import ru.nsu.kosarev.db.impresario.projection.rowmapper.ImpresarioArtistProjectionRowMapper;
+import ru.nsu.kosarev.db.impresario.projection.rowmapper.ImpresarioProjectionRowMapper;
 import ru.nsu.kosarev.db.impresario.repository.ImpresarioJDBCRepository;
 import ru.nsu.kosarev.db.impresario.repository.ImpresarioRepository;
 import ru.nsu.kosarev.db.impresario.sortingfilter.ImpresarioSearchParams;
@@ -146,6 +149,14 @@ public class ImpresarioService {
         return impresarioArtistProjectionStream.collect(
             Collectors.groupingBy(ImpresarioArtistProjection::getImpresarioId)
         ).values().stream().map(List::stream);
+    }
+
+    public List<ImpresarioProjection> getImpresariosOfArtist(Integer artistId) {
+        return impresarioJDBCRepository.getImpresariosOfArtist(artistId);
+    }
+
+    public List<ImpresarioProjection> getImpresariosInJenre(Integer jenreId) {
+        return impresarioJDBCRepository.getImpresariosInJenre(jenreId);
     }
 
     private Specification<Impresario> buildSpec(ImpresarioSearchParams impresarioSearchParams) {

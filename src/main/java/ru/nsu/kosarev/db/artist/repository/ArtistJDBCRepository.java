@@ -56,16 +56,26 @@ public class ArtistJDBCRepository {
 
     //Check for trigger working
     public void updateArtistWithImpresarioInJenre(ArtistImpresarioJenreDto artistImpresarioJenreDto) {
-
+        jdbcTemplate.update(
+            "UPDATE impresario_artist_jenre " +
+                "SET id = ?, impresario = ?, artist = ?, jenre = ? " +
+                "WHERE id = ?",
+            artistImpresarioJenreDto.getId(),
+            artistImpresarioJenreDto.getImpresarioId(),
+            artistImpresarioJenreDto.getArtistId(),
+            artistImpresarioJenreDto.getJenreId(),
+            artistImpresarioJenreDto.getId()
+        );
     }
 
     //Check for trigger working
-
     public void deleteArtistWithImpresarioInJenre(Integer artistId) {
-
+        jdbcTemplate.update(
+            "DELETE FROM impresario_artist_jenre " +
+                "WHERE id = ?",
+            artistId
+        );
     }
-
-    //delete nmk
 
     //2
     public List<ArtistProjection> getArtistsInJenre(Integer jenreId) {
@@ -99,7 +109,5 @@ public class ArtistJDBCRepository {
             to
         );
     }
-
-    //cross join
 
 }

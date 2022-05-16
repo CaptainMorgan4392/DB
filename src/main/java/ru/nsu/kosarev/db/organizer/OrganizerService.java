@@ -11,6 +11,9 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import ru.nsu.kosarev.db.organizer.dto.OrganizerDTO;
 import ru.nsu.kosarev.db.organizer.dto.OrganizerResponseDTO;
+import ru.nsu.kosarev.db.organizer.projection.OrganizerWithEventCountProjection;
+import ru.nsu.kosarev.db.organizer.projection.rowmapper.OrganizerWithEventCountProjectionRowMapper;
+import ru.nsu.kosarev.db.organizer.repository.OrganizerJDBCRepository;
 import ru.nsu.kosarev.db.organizer.repository.OrganizerRepository;
 import ru.nsu.kosarev.db.organizer.sortingfilter.OrganizerSearchParams;
 
@@ -19,6 +22,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,6 +31,9 @@ public class OrganizerService {
 
     @Autowired
     private OrganizerRepository organizerRepository;
+
+    @Autowired
+    private OrganizerJDBCRepository organizerJDBCRepository;
 
     boolean isAlreadyExists(OrganizerDTO organizerDTO) {
         return organizerRepository.existsById(organizerDTO.getId());
@@ -68,6 +75,10 @@ public class OrganizerService {
 
     void deleteOrganizer(Integer organizerId) {
         organizerRepository.deleteById(organizerId);
+    }
+
+    public List<OrganizerWithEventCountProjection> getOrganizersWithEventCountsInPeriod(Date from, Date to) {
+        return organizerJDBCRepository.getOrganizersWithEventCountsInPeriod(from, to);
     }
 
     private Specification<Organizer> buildSpec(OrganizerSearchParams organizerSearchParams) {

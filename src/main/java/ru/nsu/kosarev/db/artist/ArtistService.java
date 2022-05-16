@@ -13,9 +13,12 @@ import ru.nsu.kosarev.db.artist.dto.ArtistDTO;
 import ru.nsu.kosarev.db.artist.dto.ArtistImpresarioJenreDto;
 import ru.nsu.kosarev.db.artist.dto.ArtistResponseDTO;
 import ru.nsu.kosarev.db.artist.projections.ArtistImpresarioJenreProjection;
+import ru.nsu.kosarev.db.artist.projections.ArtistProjection;
+import ru.nsu.kosarev.db.artist.projections.rowmappers.ArtistProjectionRowMapper;
 import ru.nsu.kosarev.db.artist.repository.ArtistJDBCRepository;
 import ru.nsu.kosarev.db.artist.repository.ArtistRepository;
 import ru.nsu.kosarev.db.artist.sortingfilter.ArtistSearchParams;
+import ru.nsu.kosarev.db.common.utils.MyOwnTransactionManager;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -23,6 +26,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,17 +39,19 @@ public class ArtistService {
     @Autowired
     private ArtistJDBCRepository artistJDBCRepository;
 
+    @Autowired
+    private MyOwnTransactionManager myOwnTransactionManager;
+
     boolean isAlreadyExists(ArtistDTO artistDTO) {
         return artistRepository.existsById(artistDTO.getId());
     }
 
-    @Transactional
     ArtistResponseDTO saveArtist(ArtistDTO artistDTO) {
-        return ArtistMapper.toArtistDto(
+        return myOwnTransactionManager.transaction(() -> ArtistMapper.toArtistDto(
             artistRepository.save(
                 ArtistMapper.toArtist(artistDTO)
             )
-        );
+        ));
     }
 
     Page<ArtistResponseDTO> fetchArtistsPage(ArtistSearchParams artistSearchParams) {
@@ -79,6 +85,31 @@ public class ArtistService {
         artistRepository.deleteById(artistId);
     }
 
+    @Transactional
+    public void makeArtistWorkingWithImpresarioInJenre(ArtistImpresarioJenreDto artistImpresarioJenreDto) {
+        artistJDBCRepository.insertArtistWithImpresarioInJenre(artistImpresarioJenreDto);
+    }
+
+    public List<ArtistImpresarioJenreProjection> getArtistWorkingWithImpresarioInJenre() {
+        return artistJDBCRepository.getArtistsWithImpresariosInJenre();
+    }
+
+    public void updateArtistWithImpresarioInJenre(ArtistImpresarioJenreDto artistImpresarioJenreDto) {
+        artistJDBCRepository.updateArtistWithImpresarioInJenre(artistImpresarioJenreDto);
+    }
+
+    public void deleteArtistWithImpresarioInJenre(Integer artistId) {
+        artistJDBCRepository.deleteArtistWithImpresarioInJenre(artistId);
+    }
+
+    public List<ArtistProjection> getArtistsInJenre(Integer jenreId) {
+        return artistJDBCRepository.getArtistsInJenre(jenreId);
+    }
+
+    public List<ArtistProjection> getArtistsNotTakingPartInPeriod(Date from, Date to) {
+        return artistJDBCRepository.getArtistsNotTakingPartInPeriod(from, to);
+    }
+
     private Specification<Artist> buildSpec(ArtistSearchParams artistSearchParams) {
          return new Specification<>() {
              @Nullable
@@ -107,15 +138,6 @@ public class ArtistService {
                  );
              }
          };
-    }
-
-    @Transactional
-    public void makeArtistWorkingWithImpresarioInJenre(ArtistImpresarioJenreDto artistImpresarioJenreDto) {
-        artistJDBCRepository.insertArtistWithImpresarioInJenre(artistImpresarioJenreDto);
-    }
-
-    public List<ArtistImpresarioJenreProjection> getArtistWorkingWithImpresarioInJenre() {
-        return artistJDBCRepository.getArtistsWithImpresariosInJenre();
     }
 
 }

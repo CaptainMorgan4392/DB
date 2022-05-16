@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.nsu.kosarev.db.artist.dto.ArtistDTO;
 import ru.nsu.kosarev.db.artist.dto.ArtistImpresarioJenreDto;
 import ru.nsu.kosarev.db.artist.dto.ArtistResponseDTO;
+import ru.nsu.kosarev.db.artist.dto.PeriodDTO;
 import ru.nsu.kosarev.db.artist.projections.ArtistImpresarioJenreProjection;
+import ru.nsu.kosarev.db.artist.projections.ArtistProjection;
 import ru.nsu.kosarev.db.artist.sortingfilter.ArtistSearchParams;
 
 import java.util.List;
@@ -34,7 +36,7 @@ public class ArtistController {
         return artistService.saveArtist(artistDTO);
     }
 
-    @GetMapping(value = "/fetch/page")
+    @PostMapping(value = "/fetch/page")
     public List<ArtistResponseDTO> fetchArtistsPage(@RequestBody ArtistSearchParams artistSearchParams) {
         if (artistSearchParams.getPageNumber() == null || artistSearchParams.getPageSize() == null) {
             return null;
@@ -43,7 +45,7 @@ public class ArtistController {
         return artistService.fetchArtistsPage(artistSearchParams).getContent();
     }
 
-    @GetMapping(value = "/fetch/list")
+    @PostMapping(value = "/fetch/list")
     public List<ArtistResponseDTO> fetchArtistsList(@RequestBody ArtistSearchParams artistSearchParams) {
         return artistService.fetchArtistsList(artistSearchParams);
     }
@@ -74,12 +76,22 @@ public class ArtistController {
 
     @PatchMapping(value = "/artistWithImpresario/update")
     public void updateArtistWorkingWithImpresarioInJenre(@RequestBody ArtistImpresarioJenreDto artistImpresarioJenreDto) {
-
+        artistService.updateArtistWithImpresarioInJenre(artistImpresarioJenreDto);
     }
 
     @DeleteMapping(value = "/artistWithImpresario/delete/{id}")
     public void deleteArtistWorkingWithImpresarioInJenre(@PathVariable("id") Integer id) {
+        artistService.deleteArtistWithImpresarioInJenre(id);
+    }
 
+    @GetMapping(value = "/artistsInJenre/{id}")
+    public List<ArtistProjection> getArtistsInJenre(@PathVariable("id") Integer jenreId) {
+        return artistService.getArtistsInJenre(jenreId);
+    }
+
+    @PostMapping(value = "/artistsNotTakingPartInPeriod")
+    public List<ArtistProjection> getArtistsNotTakingPartInPeriod(@RequestBody PeriodDTO periodDTO) {
+        return artistService.getArtistsNotTakingPartInPeriod(periodDTO.getFrom(), periodDTO.getTo());
     }
 
 }
