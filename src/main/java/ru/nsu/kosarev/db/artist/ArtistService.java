@@ -14,10 +14,8 @@ import ru.nsu.kosarev.db.artist.dto.ArtistImpresarioJenreDto;
 import ru.nsu.kosarev.db.artist.dto.ArtistResponseDTO;
 import ru.nsu.kosarev.db.artist.dto.ArtistWithEventsDTO;
 import ru.nsu.kosarev.db.artist.dto.ArtistsEventPlacesDTO;
-import ru.nsu.kosarev.db.artist.projections.ArtistEventProjection;
 import ru.nsu.kosarev.db.artist.projections.ArtistImpresarioJenreProjection;
 import ru.nsu.kosarev.db.artist.projections.ArtistProjection;
-import ru.nsu.kosarev.db.artist.projections.rowmappers.ArtistProjectionRowMapper;
 import ru.nsu.kosarev.db.artist.repository.ArtistJDBCRepository;
 import ru.nsu.kosarev.db.artist.repository.ArtistRepository;
 import ru.nsu.kosarev.db.artist.sortingfilter.ArtistSearchParams;
@@ -97,8 +95,8 @@ public class ArtistService {
         return artistJDBCRepository.getArtistsWithImpresariosInJenre();
     }
 
-    void deleteArtistWithImpresarioInJenre(Integer artistId) {
-        artistJDBCRepository.deleteArtistWithImpresarioInJenre(artistId);
+    void deleteArtistWithImpresarioInJenre(Integer impresarioId, Integer artistId, Integer jenreId) {
+        artistJDBCRepository.deleteArtistWithImpresarioInJenre(impresarioId, artistId, jenreId);
     }
 
     List<ArtistProjection> getArtistsInJenre(Integer jenreId) {

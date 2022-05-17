@@ -57,11 +57,13 @@ public class ArtistJDBCRepository {
     }
 
     //Check for trigger working
-    public void deleteArtistWithImpresarioInJenre(Integer artistId) {
+    public void deleteArtistWithImpresarioInJenre(Integer impresarioId, Integer artistId, Integer jenreId) {
         jdbcTemplate.update(
             "DELETE FROM impresario_artist_jenre " +
-                "WHERE id = ?",
-            artistId
+                "WHERE impresario = ? AND artist = ? AND jenre = ?",
+            impresarioId,
+            artistId,
+            jenreId
         );
     }
 
