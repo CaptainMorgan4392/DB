@@ -3,9 +3,11 @@ package ru.nsu.kosarev.db.impresario.repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import ru.nsu.kosarev.db.impresario.projection.ImpresarioProjection;
 import ru.nsu.kosarev.db.impresario.projection.ImpresarioArtistProjection;
+import ru.nsu.kosarev.db.impresario.projection.ImpresarioArtistProjectionWithoutIds;
+import ru.nsu.kosarev.db.impresario.projection.ImpresarioProjection;
 import ru.nsu.kosarev.db.impresario.projection.rowmapper.ImpresarioArtistProjectionRowMapper;
+import ru.nsu.kosarev.db.impresario.projection.rowmapper.ImpresarioArtistProjectionWithoutIdsRowMapper;
 import ru.nsu.kosarev.db.impresario.projection.rowmapper.ImpresarioProjectionRowMapper;
 
 import java.util.List;
@@ -17,11 +19,11 @@ public class ImpresarioJDBCRepository {
     private JdbcTemplate jdbcTemplate;
 
     //4
-    public List<ImpresarioArtistProjection> getArtistsWithImpresarioInMultipleJenres(Integer impresarioId) {
+    public List<ImpresarioArtistProjectionWithoutIds> getArtistsWithImpresarioInMultipleJenres(Integer impresarioId) {
         return jdbcTemplate.query(
             "SELECT artistName, artistSurname, artistDate, impresarioName, impresarioSurname, impresarioDate " +
                 "FROM " +
-                "(SELECT a.id, a.name AS artistName, " +
+                "(SELECT DISTINCT ON (a.id, i.id) a.id, a.name AS artistName, " +
                 "a.surname AS artistSurname, " +
                 "a.birthDate AS artistDate, " +
                 "i.id, i.name AS impresarioName, " +
@@ -35,7 +37,7 @@ public class ImpresarioJDBCRepository {
                 "GROUP BY (a.id, a.name, a.surname, a.birthDate, " +
                 "i.id, i.name, i.surname, i.birthDate) HAVING count(*) > 1) AS X " +
                 "ORDER BY (artistName, artistSurname)",
-            new ImpresarioArtistProjectionRowMapper(),
+            new ImpresarioArtistProjectionWithoutIdsRowMapper(),
             impresarioId
         );
     }
@@ -54,7 +56,8 @@ public class ImpresarioJDBCRepository {
                 "FROM impresario i " +
                 "LEFT JOIN (impresario_artist_jenre iaj " +
                 "INNER JOIN artist a on a.id = iaj.artist " +
-                "INNER JOIN jenre j on j.id = iaj.jenre) on i.id = iaj.impresario" ,
+                "INNER JOIN jenre j on j.id = iaj.jenre) on i.id = iaj.impresario " +
+                "ORDER BY (i.id, a.id)" ,
             new ImpresarioArtistProjectionRowMapper()
         );
     }
@@ -62,7 +65,7 @@ public class ImpresarioJDBCRepository {
     //5
     public List<ImpresarioProjection> getImpresariosOfArtist(Integer artistId) {
         return jdbcTemplate.query(
-            "SELECT i.name AS impresarioName, " +
+            "SELECT DISTINCT ON(iaj.impresario, iaj.artist) i.name AS impresarioName, " +
                 "i.surname AS impresarioSurname, " +
                 "i.birthDate AS impresarioDate " +
                 "FROM impresario i " +
@@ -76,7 +79,7 @@ public class ImpresarioJDBCRepository {
     //9
     public List<ImpresarioProjection> getImpresariosInJenre(Integer jenreId) {
         return jdbcTemplate.query(
-            "SELECT i.name AS impresarioName, " +
+            "SELECT DISTINCT ON(iaj.impresario, iaj.jenre) i.name AS impresarioName, " +
                 "i.surname AS impresarioSurname, " +
                 "i.birthDate AS impresarioDate " +
                 "FROM impresario i " +

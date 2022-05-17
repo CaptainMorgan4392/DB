@@ -70,7 +70,7 @@ public class ArtistJDBCRepository {
     //2
     public List<ArtistProjection> getArtistsInJenre(Integer jenreId) {
         return jdbcTemplate.query(
-            "SELECT a.name AS artistName, " +
+            "SELECT DISTINCT ON(iaj.artist, iaj.jenre) a.name AS artistName, " +
                 "a.surname AS artistSurname, " +
                 "a.birthDate AS artistDate " +
                 "FROM artist a " +
@@ -84,16 +84,20 @@ public class ArtistJDBCRepository {
     //10
     public List<ArtistProjection> getArtistsNotTakingPartInPeriod(Date from, Date to) {
         return jdbcTemplate.query(
-            "SELECT foundArtistId, commonArtistId FROM " +
+            "SELECT a.name as artistName, " +
+                "a.surname as artistSurname, " +
+                "a.birthdate as artistDate " +
+                "FROM artist a INNER JOIN " +
+                "(SELECT foundArtistId, commonArtistId FROM " +
                 "(SELECT x.id AS foundArtistId, y.id AS commonArtistId FROM " +
                 "(SELECT a.id FROM artist a " +
                 "INNER JOIN artist_event ae on a.id = ae.artist " +
                 "INNER JOIN event e on e.id = ae.event " +
                 "WHERE e.eventdate BETWEEN ? AND ?" +
                 ") AS x " +
-                "RIGHT JOIN LATERAL " +
+                "RIGHT JOIN " +
                 "(SELECT * FROM artist a) AS y ON x.id = y.id) AS lateralJoined " +
-                "WHERE foundArtistId IS NULL",
+                "WHERE foundArtistId IS NULL) AS resultTable ON a.id = resultTable.commonArtistId",
             new ArtistProjectionRowMapper(),
             from,
             to

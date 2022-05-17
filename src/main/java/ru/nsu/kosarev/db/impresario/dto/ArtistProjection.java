@@ -1,9 +1,11 @@
 package ru.nsu.kosarev.db.impresario.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import ru.nsu.kosarev.db.impresario.projection.ImpresarioArtistProjection;
 
+@AllArgsConstructor
 @Getter
 @Setter
 public class ArtistProjection {

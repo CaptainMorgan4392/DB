@@ -2,19 +2,15 @@ package ru.nsu.kosarev.db.impresario;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.nsu.kosarev.db.impresario.dto.ArtistsOfAllImpresariosDTO;
 import ru.nsu.kosarev.db.impresario.dto.ImpresarioDTO;
 import ru.nsu.kosarev.db.impresario.dto.ImpresarioResponseDTO;
-import ru.nsu.kosarev.db.impresario.projection.ImpresarioArtistProjection;
+import ru.nsu.kosarev.db.impresario.projection.ImpresarioArtistProjectionWithoutIds;
 import ru.nsu.kosarev.db.impresario.projection.ImpresarioProjection;
 import ru.nsu.kosarev.db.impresario.sortingfilter.ImpresarioSearchParams;
 
@@ -77,7 +73,7 @@ public class ImpresarioController {
     }
 
     @PostMapping(value = "/getArtistsInMultipleJenres/{id}")
-    public List<ImpresarioArtistProjection> getArtistsInMultipleJenres(@PathVariable("id") Integer impresarioId) {
+    public List<ImpresarioArtistProjectionWithoutIds> getArtistsInMultipleJenres(@PathVariable("id") Integer impresarioId) {
         return impresarioService.getArtistsInMultipleJenres(impresarioId);
     }
 

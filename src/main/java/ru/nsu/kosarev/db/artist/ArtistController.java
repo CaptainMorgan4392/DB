@@ -99,7 +99,8 @@ public class ArtistController {
         artistService.deleteArtistWithImpresarioInJenre(impresarioId, artistId, jenreId);
     }
 
-    @PostMapping(value = "/artistsInJenre/{id}")
+    @PostMapping(value = "/artistsInJenre/{id}", produces = MediaType.APPLICATION_JSON_VALUE,
+        consumes = MediaType.APPLICATION_JSON_VALUE)
     public List<ArtistProjection> getArtistsInJenre(@PathVariable("id") Integer jenreId) {
         return artistService.getArtistsInJenre(jenreId);
     }
@@ -110,7 +111,7 @@ public class ArtistController {
     }
 
     @PostMapping(value = "/organizerEvent/{art_id}/{event_id}")
-    public void bindOrganizerToEvent(
+    public void bindArtistToEvent(
         @PathVariable("art_id") Integer artistId,
         @PathVariable("event_id") Integer eventId
     ) {
@@ -118,16 +119,16 @@ public class ArtistController {
     }
 
     @PostMapping(value = "/organizerEvent/get/{id}")
-    public List<ArtistWithEventsDTO> getEventsOfOrganizer(@PathVariable("id") Integer artistId) {
+    public List<ArtistWithEventsDTO> getEventsOfArtist(@PathVariable("id") Integer artistId) {
         return artistService.getEventsOfArtist(artistId);
     }
 
     @PostMapping(value = "/organizerEvent/delete/{art_id}/{event_id}")
-    public void deleteEventOfOrganizer(
-        @PathVariable("art_id") Integer organizerId,
+    public void deleteEventOfArtist(
+        @PathVariable("art_id") Integer artistId,
         @PathVariable("event_id") Integer eventId
     ) {
-        artistService.deleteEventOfArtist(organizerId, eventId);
+        artistService.deleteEventOfArtist(artistId, eventId);
     }
 
     @PostMapping(value = "/artistsWithPlaces")
