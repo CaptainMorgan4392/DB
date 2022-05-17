@@ -1,12 +1,9 @@
 package ru.nsu.kosarev.db.building;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,7 +20,9 @@ public class BuildingController {
     @Autowired
     private BuildingService buildingService;
 
-    @PutMapping(value = "/add")
+    @PostMapping(value = "/add",
+        produces = MediaType.APPLICATION_JSON_VALUE,
+        consumes = MediaType.APPLICATION_JSON_VALUE)
     public BuildingResponseDTO createBuilding(@RequestBody BuildingDTO buildingDTO) {
         if (buildingDTO.getId() != null && buildingService.isAlreadyExists(buildingDTO)) {
             return null;
@@ -32,7 +31,9 @@ public class BuildingController {
         return buildingService.saveBuilding(buildingDTO);
     }
 
-    @GetMapping(value = "/fetch/page")
+    @PostMapping(value = "/fetch/page",
+        produces = MediaType.APPLICATION_JSON_VALUE,
+        consumes = MediaType.APPLICATION_JSON_VALUE)
     public List<BuildingResponseDTO> fetchBuildingsPage(@RequestBody BuildingSearchParams buildingSearchParams) {
         if (buildingSearchParams.getPageNumber() == null || buildingSearchParams.getPageSize() == null) {
             return null;
@@ -41,12 +42,16 @@ public class BuildingController {
         return buildingService.fetchBuildingsPage(buildingSearchParams);
     }
 
-    @GetMapping(value = "/fetch/list")
+    @PostMapping(value = "/fetch/list",
+        produces = MediaType.APPLICATION_JSON_VALUE,
+        consumes = MediaType.APPLICATION_JSON_VALUE)
     public List<BuildingResponseDTO> fetchBuildingsList(@RequestBody BuildingSearchParams buildingSearchParams) {
         return buildingService.fetchBuildingsList(buildingSearchParams);
     }
 
-    @PatchMapping(value = "/update")
+    @PostMapping(value = "/update",
+        produces = MediaType.APPLICATION_JSON_VALUE,
+        consumes = MediaType.APPLICATION_JSON_VALUE)
     public BuildingResponseDTO updateBuilding(@RequestBody BuildingDTO buildingDTO) {
         if (buildingDTO.getId() == null || !buildingService.isAlreadyExists(buildingDTO)) {
             return null;
@@ -55,7 +60,9 @@ public class BuildingController {
         return buildingService.saveBuilding(buildingDTO);
     }
 
-    @DeleteMapping(value = "/delete/{id}")
+    @PostMapping(value = "/delete/{id}",
+        produces = MediaType.APPLICATION_JSON_VALUE,
+        consumes = MediaType.APPLICATION_JSON_VALUE)
     public void deleteBuilding(@PathVariable("id") Integer buildingId) {
         buildingService.deleteBuilding(buildingId);
     }

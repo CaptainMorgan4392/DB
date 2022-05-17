@@ -1,11 +1,16 @@
 package ru.nsu.kosarev.db.artist.dto;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
-@AllArgsConstructor
+@AllArgsConstructor(onConstructor = @__(@JsonCreator))
+@Builder(toBuilder = true)
+@Getter
 public class ArtistResponseDTO {
 
     @Nullable

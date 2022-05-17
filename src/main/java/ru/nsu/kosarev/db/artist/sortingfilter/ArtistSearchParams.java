@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.lang.Nullable;
 
 import java.util.Date;
@@ -15,6 +16,7 @@ import java.util.Date;
 @JsonDeserialize(builder = ArtistSearchParams.ArtistSearchParamsBuilder.class)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Builder
+@NoArgsConstructor
 @AllArgsConstructor(onConstructor=@__(@JsonCreator))
 public class ArtistSearchParams {
 

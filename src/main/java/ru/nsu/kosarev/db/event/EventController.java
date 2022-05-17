@@ -2,6 +2,7 @@ package ru.nsu.kosarev.db.event;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -28,7 +29,9 @@ public class EventController {
     @Autowired
     private EventService eventService;
 
-    @PutMapping(value = "/add")
+    @PostMapping(value = "/add",
+        produces = MediaType.APPLICATION_JSON_VALUE,
+        consumes = MediaType.APPLICATION_JSON_VALUE)
     public EventResponseDTO createEvent(@RequestBody EventDTO eventDTO) {
         if (eventDTO.getId() != null && eventService.isAlreadyExists(eventDTO)) {
             return null;
@@ -37,7 +40,9 @@ public class EventController {
         return eventService.saveEvent(eventDTO);
     }
 
-    @GetMapping(value = "/fetch/page")
+    @PostMapping(value = "/fetch/page",
+        produces = MediaType.APPLICATION_JSON_VALUE,
+        consumes = MediaType.APPLICATION_JSON_VALUE)
     public List<EventResponseDTO> fetchEventsPage(@RequestBody EventSearchParams eventSearchParams) {
         if (eventSearchParams.getPageNumber() == null || eventSearchParams.getPageSize() == null) {
             return null;
@@ -46,12 +51,16 @@ public class EventController {
         return eventService.fetchEventsPage(eventSearchParams).getContent();
     }
 
-    @GetMapping(value = "/fetch/list")
+    @PostMapping(value = "/fetch/list",
+        produces = MediaType.APPLICATION_JSON_VALUE,
+        consumes = MediaType.APPLICATION_JSON_VALUE)
     public List<EventResponseDTO> fetchEventsList(@RequestBody EventSearchParams eventSearchParams) {
         return eventService.fetchEventsList(eventSearchParams);
     }
 
-    @PatchMapping(value = "/update")
+    @PostMapping(value = "/update",
+        produces = MediaType.APPLICATION_JSON_VALUE,
+        consumes = MediaType.APPLICATION_JSON_VALUE)
     public EventResponseDTO updateEvent(@RequestBody EventDTO eventDTO) {
         if (eventDTO.getId() == null || !eventService.isAlreadyExists(eventDTO)) {
             return null;
@@ -60,7 +69,9 @@ public class EventController {
         return eventService.saveEvent(eventDTO);
     }
 
-    @DeleteMapping(value = "/delete/{id}")
+    @PostMapping(value = "/delete/{id}",
+        produces = MediaType.APPLICATION_JSON_VALUE,
+        consumes = MediaType.APPLICATION_JSON_VALUE)
     public void deleteEvent(@PathVariable("id") Integer eventId) {
         eventService.deleteEvent(eventId);
     }

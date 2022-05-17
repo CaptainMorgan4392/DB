@@ -3,6 +3,7 @@ package ru.nsu.kosarev.db.organizer.repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import ru.nsu.kosarev.db.organizer.projection.OrganizerEventProjection;
 import ru.nsu.kosarev.db.organizer.projection.OrganizerWithEventCountProjection;
 import ru.nsu.kosarev.db.organizer.projection.rowmapper.OrganizerWithEventCountProjectionRowMapper;
 
@@ -32,6 +33,20 @@ public class OrganizerJDBCRepository {
             from,
             to
         );
+    }
+
+    public void bindOrganizerToEvent(Integer organizerId, Integer eventId) {
+        //TODO
+    }
+
+    public List<OrganizerEventProjection> getEventsOfOrganizer(Integer organizerId) {
+        //TODO
+
+        return null;
+    }
+
+    public void deleteEventOfOrganizer(Integer organizerId, Integer eventId) {
+        //TODO
     }
 
 }

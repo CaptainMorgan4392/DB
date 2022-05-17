@@ -26,6 +26,7 @@ import ru.nsu.kosarev.db.building.specification.ConcertSquareSpecification;
 import ru.nsu.kosarev.db.building.specification.CulturePalaceSpecification;
 import ru.nsu.kosarev.db.building.specification.StageSpecification;
 import ru.nsu.kosarev.db.building.specification.TheatreSpecification;
+import ru.nsu.kosarev.db.common.utils.MyOwnTransactionManager;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -60,6 +61,9 @@ public class BuildingService {
 
     @Autowired
     private ConcertSquareRepository concertSquareRepository;
+
+    @Autowired
+    private MyOwnTransactionManager myOwnTransactionManager;
 
     private final Map<BuildingType, Function<BuildingDTO, BuildingResponseDTO>> savingForConcreteType = Map.of(
         BuildingType.THEATRE, (buildingDTO -> {
@@ -118,9 +122,10 @@ public class BuildingService {
         return buildingRepository.existsById(buildingDTO.getId());
     }
 
-    @Transactional
     BuildingResponseDTO saveBuilding(BuildingDTO buildingDTO) {
-        return savingForConcreteType.get(buildingDTO.getBuildingType()).apply(buildingDTO);
+        return myOwnTransactionManager.transaction(() ->
+            savingForConcreteType.get(buildingDTO.getBuildingType()).apply(buildingDTO)
+        );
     }
 
     List<BuildingResponseDTO> fetchBuildingsPage(BuildingSearchParams buildingSearchParams) {
@@ -217,7 +222,7 @@ public class BuildingService {
         int pageSize
     ) {
         int startIndex = pageSize * pageNumber;
-        int endIndex = pageSize * (pageNumber + 1) - 1;
+        int endIndex = pageSize * (pageNumber + 1);
 
         return IntStream.range(startIndex, endIndex)
             .mapToObj(i -> i < buildingResponseDTOS.size() ? buildingResponseDTOS.get(i) : null)

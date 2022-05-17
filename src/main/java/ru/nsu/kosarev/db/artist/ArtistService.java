@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 import ru.nsu.kosarev.db.artist.dto.ArtistDTO;
 import ru.nsu.kosarev.db.artist.dto.ArtistImpresarioJenreDto;
 import ru.nsu.kosarev.db.artist.dto.ArtistResponseDTO;
+import ru.nsu.kosarev.db.artist.dto.ArtistWithEventsDTO;
+import ru.nsu.kosarev.db.artist.dto.ArtistsEventPlacesDTO;
+import ru.nsu.kosarev.db.artist.projections.ArtistEventProjection;
 import ru.nsu.kosarev.db.artist.projections.ArtistImpresarioJenreProjection;
 import ru.nsu.kosarev.db.artist.projections.ArtistProjection;
 import ru.nsu.kosarev.db.artist.projections.rowmappers.ArtistProjectionRowMapper;
@@ -86,28 +89,42 @@ public class ArtistService {
     }
 
     @Transactional
-    public void makeArtistWorkingWithImpresarioInJenre(ArtistImpresarioJenreDto artistImpresarioJenreDto) {
+    void makeArtistWorkingWithImpresarioInJenre(ArtistImpresarioJenreDto artistImpresarioJenreDto) {
         artistJDBCRepository.insertArtistWithImpresarioInJenre(artistImpresarioJenreDto);
     }
 
-    public List<ArtistImpresarioJenreProjection> getArtistWorkingWithImpresarioInJenre() {
+    List<ArtistImpresarioJenreProjection> getArtistWorkingWithImpresarioInJenre() {
         return artistJDBCRepository.getArtistsWithImpresariosInJenre();
     }
 
-    public void updateArtistWithImpresarioInJenre(ArtistImpresarioJenreDto artistImpresarioJenreDto) {
-        artistJDBCRepository.updateArtistWithImpresarioInJenre(artistImpresarioJenreDto);
-    }
-
-    public void deleteArtistWithImpresarioInJenre(Integer artistId) {
+    void deleteArtistWithImpresarioInJenre(Integer artistId) {
         artistJDBCRepository.deleteArtistWithImpresarioInJenre(artistId);
     }
 
-    public List<ArtistProjection> getArtistsInJenre(Integer jenreId) {
+    List<ArtistProjection> getArtistsInJenre(Integer jenreId) {
         return artistJDBCRepository.getArtistsInJenre(jenreId);
     }
 
-    public List<ArtistProjection> getArtistsNotTakingPartInPeriod(Date from, Date to) {
+    List<ArtistProjection> getArtistsNotTakingPartInPeriod(Date from, Date to) {
         return artistJDBCRepository.getArtistsNotTakingPartInPeriod(from, to);
+    }
+
+    void bindArtistToEvent(Integer artistId, Integer eventId) {
+        artistJDBCRepository.bindArtistToEvent(artistId, eventId);
+    }
+
+    List<ArtistWithEventsDTO> getEventsOfArtist(Integer artistId) {
+        //return artistJDBCRepository.getEventsOfArtist(artistId);
+
+        return null;
+    }
+
+    void deleteEventOfArtist(Integer artistId, Integer eventId) {
+        artistJDBCRepository.deleteEventOfArtist(artistId, eventId);
+    }
+
+    void bindArtistsToPlacesInEvent(ArtistsEventPlacesDTO artistsEventPlacesDTO) {
+        artistJDBCRepository.bindArtistsToPlacesInEvent(artistsEventPlacesDTO);
     }
 
     private Specification<Artist> buildSpec(ArtistSearchParams artistSearchParams) {

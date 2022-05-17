@@ -2,11 +2,15 @@ package ru.nsu.kosarev.db.building.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import ru.nsu.kosarev.db.building.BuildingType;
 
 @AllArgsConstructor
+@Builder(toBuilder = true)
+@Getter
 public class BuildingResponseDTO {
 
     @Nullable

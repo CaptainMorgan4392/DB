@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import org.springframework.lang.NonNull;
+import lombok.NoArgsConstructor;
 import org.springframework.lang.Nullable;
 import ru.nsu.kosarev.db.building.BuildingType;
 
@@ -16,6 +16,7 @@ import ru.nsu.kosarev.db.building.BuildingType;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Builder(toBuilder = true)
 @AllArgsConstructor(onConstructor=@__(@JsonCreator))
+@NoArgsConstructor
 public class BuildingSearchParams {
 
     @Nullable

@@ -1,6 +1,7 @@
 package ru.nsu.kosarev.db.common.utils;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
@@ -14,35 +15,42 @@ public class MyOwnTransactionManager {
     @Autowired
     private DataSource dataSource;
 
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
     public <T> T transaction(Supplier<T> func) {
         try (Connection connection = dataSource.getConnection()) {
-            dataSource.getConnection().setAutoCommit(false);
+            connection.setAutoCommit(false);
 
-            T res = func.get();
-
-            connection.commit();
-            return res;
-        } catch (Throwable th) {
             try {
-                dataSource.getConnection().rollback();
-            } catch (SQLException ignored) {
+                T res = func.get();
+
+                connection.commit();
+                return res;
+            } catch (Throwable th) {
+                connection.rollback();
+                throw th;
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
             return null;
         }
     }
 
     public void transaction(Runnable func) {
         try (Connection connection = dataSource.getConnection()) {
-            dataSource.getConnection().setAutoCommit(false);
+            connection.setAutoCommit(false);
 
-            func.run();
-
-            connection.commit();
-        } catch (Throwable th) {
             try {
-                dataSource.getConnection().rollback();
-            } catch (SQLException ignored) {
+                func.run();
+
+                connection.commit();
+            } catch (Throwable th) {
+                connection.rollback();
+                throw th;
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 

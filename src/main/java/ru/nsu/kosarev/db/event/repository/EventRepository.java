@@ -5,9 +5,9 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 import ru.nsu.kosarev.db.event.Event;
 
+import java.util.List;
+
 @Repository
 public interface EventRepository extends PagingAndSortingRepository<Event, Integer>, JpaSpecificationExecutor<Event> {
-
-
-
+    List<Event> findAll();
 }

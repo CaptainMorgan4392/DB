@@ -2,6 +2,7 @@ package ru.nsu.kosarev.db.event.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.lang.NonNull;
@@ -10,6 +11,7 @@ import org.springframework.lang.Nullable;
 import java.util.Date;
 
 @AllArgsConstructor
+@Builder(toBuilder = true)
 @Getter
 @Setter
 public class EventResponseDTO {

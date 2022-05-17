@@ -6,6 +6,8 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import ru.nsu.kosarev.db.artist.dto.ArtistImpresarioJenreDto;
+import ru.nsu.kosarev.db.artist.dto.ArtistsEventPlacesDTO;
+import ru.nsu.kosarev.db.artist.projections.ArtistEventProjection;
 import ru.nsu.kosarev.db.artist.projections.ArtistImpresarioJenreProjection;
 import ru.nsu.kosarev.db.artist.projections.ArtistProjection;
 import ru.nsu.kosarev.db.artist.projections.rowmappers.ArtistImpresarioJenreProjectionRowMapper;
@@ -55,20 +57,6 @@ public class ArtistJDBCRepository {
     }
 
     //Check for trigger working
-    public void updateArtistWithImpresarioInJenre(ArtistImpresarioJenreDto artistImpresarioJenreDto) {
-        jdbcTemplate.update(
-            "UPDATE impresario_artist_jenre " +
-                "SET id = ?, impresario = ?, artist = ?, jenre = ? " +
-                "WHERE id = ?",
-            artistImpresarioJenreDto.getId(),
-            artistImpresarioJenreDto.getImpresarioId(),
-            artistImpresarioJenreDto.getArtistId(),
-            artistImpresarioJenreDto.getJenreId(),
-            artistImpresarioJenreDto.getId()
-        );
-    }
-
-    //Check for trigger working
     public void deleteArtistWithImpresarioInJenre(Integer artistId) {
         jdbcTemplate.update(
             "DELETE FROM impresario_artist_jenre " +
@@ -108,6 +96,23 @@ public class ArtistJDBCRepository {
             from,
             to
         );
+    }
+
+    public void bindArtistToEvent(Integer artistId, Integer eventId) {
+        //TODO
+    }
+
+    public List<ArtistEventProjection> getEventsOfArtist(Integer artistId) {
+        //TODO
+        return null;
+    }
+
+    public void deleteEventOfArtist(Integer artistId, Integer eventId) {
+        //TODO
+    }
+
+    public void bindArtistsToPlacesInEvent(ArtistsEventPlacesDTO artistsEventPlacesDTO) {
+        //TODO
     }
 
 }

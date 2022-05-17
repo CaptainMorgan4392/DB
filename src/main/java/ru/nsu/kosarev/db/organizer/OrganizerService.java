@@ -9,8 +9,10 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 import ru.nsu.kosarev.db.organizer.dto.OrganizerDTO;
 import ru.nsu.kosarev.db.organizer.dto.OrganizerResponseDTO;
+import ru.nsu.kosarev.db.organizer.dto.OrganizerWithEventsDTO;
 import ru.nsu.kosarev.db.organizer.projection.OrganizerWithEventCountProjection;
 import ru.nsu.kosarev.db.organizer.projection.rowmapper.OrganizerWithEventCountProjectionRowMapper;
 import ru.nsu.kosarev.db.organizer.repository.OrganizerJDBCRepository;
@@ -79,6 +81,20 @@ public class OrganizerService {
 
     public List<OrganizerWithEventCountProjection> getOrganizersWithEventCountsInPeriod(Date from, Date to) {
         return organizerJDBCRepository.getOrganizersWithEventCountsInPeriod(from, to);
+    }
+
+    public void bindOrganizerToEvent(Integer organizerId, Integer eventId) {
+        organizerJDBCRepository.bindOrganizerToEvent(organizerId, eventId);
+    }
+
+    public List<OrganizerWithEventsDTO> getEventsOfOrganizer(Integer organizerId) {
+        //return organizerJDBCRepository.getEventsOfOrganizer(organizerId);
+
+        return null;
+    }
+
+    public void deleteEventOfOrganizer(Integer organizerId, Integer eventId) {
+        organizerJDBCRepository.deleteEventOfOrganizer(organizerId, eventId);
     }
 
     private Specification<Organizer> buildSpec(OrganizerSearchParams organizerSearchParams) {
