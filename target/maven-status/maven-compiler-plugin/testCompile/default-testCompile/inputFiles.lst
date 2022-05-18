@@ -1,0 +1,12 @@
+/Users/captainmorgan/Desktop/db/src/test/java/ru/nsu/kosarev/db/artist/ArtistCrudIntegrationTest.java
+/Users/captainmorgan/Desktop/db/src/test/java/ru/nsu/kosarev/db/event/EventCrudIntegrationTest.java
+/Users/captainmorgan/Desktop/db/src/test/java/ru/nsu/kosarev/db/artist_event/ArtistEventCrudIntegrationTest.java
+/Users/captainmorgan/Desktop/db/src/test/java/ru/nsu/kosarev/db/artist/ArtistSpecificIntegrationTest.java
+/Users/captainmorgan/Desktop/db/src/test/java/ru/nsu/kosarev/db/event/EventSpecificIntegrationTest.java
+/Users/captainmorgan/Desktop/db/src/test/java/ru/nsu/kosarev/db/impresario/ImpresarioSpecificIntegrationTest.java
+/Users/captainmorgan/Desktop/db/src/test/java/ru/nsu/kosarev/db/impresario/ImpresarioCrudIntegrationTest.java
+/Users/captainmorgan/Desktop/db/src/test/java/ru/nsu/kosarev/db/building/BuildingCrudIntegrationTest.java
+/Users/captainmorgan/Desktop/db/src/test/java/ru/nsu/kosarev/db/organizer_event/OrganizerEventCrudIntegrationTest.java
+/Users/captainmorgan/Desktop/db/src/test/java/ru/nsu/kosarev/db/organizer/OrganizerSpecificIntegrationTest.java
+/Users/captainmorgan/Desktop/db/src/test/java/ru/nsu/kosarev/db/organizer/OrganizerCrudIntegrationTest.java
+/Users/captainmorgan/Desktop/db/src/test/java/ru/nsu/kosarev/db/impresario_artist_jenre/ImpresarioArtistJenreCrudTest.java
