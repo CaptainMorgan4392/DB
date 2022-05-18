@@ -15,7 +15,7 @@ public class ArtistWithPlaceProjectionRowMapper implements RowMapper<ArtistWithP
     public ArtistWithPlaceProjection mapRow(ResultSet rs, int rowNum) throws SQLException {
         return new ArtistWithPlaceProjection(
             rs.getString("artistName"),
-            rs.getString("artistType"),
+            rs.getString("artistSurname"),
             DateTimeFormatter.getFormattedDateFromTimestamp(rs.getDate("artistBirthDate")),
             rs.getInt("artistPlace")
         );

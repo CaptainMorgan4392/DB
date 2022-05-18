@@ -15,7 +15,7 @@ public class OrganizerWithEventCountProjectionRowMapper implements RowMapper<Org
     public OrganizerWithEventCountProjection mapRow(ResultSet rs, int rowNum) throws SQLException {
         return new OrganizerWithEventCountProjection(
             rs.getString("organizerName"),
-            rs.getString("organizerType"),
+            rs.getString("organizerSurname"),
             DateTimeFormatter.getFormattedDateFromTimestamp(rs.getDate("organizerBirthDate")),
             rs.getInt("eventCount")
         );

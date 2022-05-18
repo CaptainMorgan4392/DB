@@ -12,8 +12,7 @@ import org.springframework.stereotype.Service;
 import ru.nsu.kosarev.db.artist.dto.ArtistDTO;
 import ru.nsu.kosarev.db.artist.dto.ArtistImpresarioJenreDto;
 import ru.nsu.kosarev.db.artist.dto.ArtistResponseDTO;
-import ru.nsu.kosarev.db.artist.dto.ArtistWithEventsDTO;
-import ru.nsu.kosarev.db.artist.dto.ArtistsEventPlacesDTO;
+import ru.nsu.kosarev.db.artist.projections.ArtistEventProjection;
 import ru.nsu.kosarev.db.artist.projections.ArtistImpresarioJenreProjection;
 import ru.nsu.kosarev.db.artist.projections.ArtistProjection;
 import ru.nsu.kosarev.db.artist.repository.ArtistJDBCRepository;
@@ -111,18 +110,12 @@ public class ArtistService {
         artistJDBCRepository.bindArtistToEvent(artistId, eventId);
     }
 
-    List<ArtistWithEventsDTO> getEventsOfArtist(Integer artistId) {
-        //return artistJDBCRepository.getEventsOfArtist(artistId);
-
-        return null;
+    List<ArtistEventProjection> getEventsOfArtist(Integer artistId) {
+        return artistJDBCRepository.getEventsOfArtist(artistId);
     }
 
     void deleteEventOfArtist(Integer artistId, Integer eventId) {
         artistJDBCRepository.deleteEventOfArtist(artistId, eventId);
-    }
-
-    void bindArtistsToPlacesInEvent(ArtistsEventPlacesDTO artistsEventPlacesDTO) {
-        artistJDBCRepository.bindArtistsToPlacesInEvent(artistsEventPlacesDTO);
     }
 
     private Specification<Artist> buildSpec(ArtistSearchParams artistSearchParams) {

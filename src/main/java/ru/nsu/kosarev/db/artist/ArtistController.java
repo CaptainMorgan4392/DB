@@ -10,9 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.nsu.kosarev.db.artist.dto.ArtistDTO;
 import ru.nsu.kosarev.db.artist.dto.ArtistImpresarioJenreDto;
 import ru.nsu.kosarev.db.artist.dto.ArtistResponseDTO;
-import ru.nsu.kosarev.db.artist.dto.ArtistWithEventsDTO;
-import ru.nsu.kosarev.db.artist.dto.ArtistsEventPlacesDTO;
 import ru.nsu.kosarev.db.artist.dto.PeriodDTO;
+import ru.nsu.kosarev.db.artist.projections.ArtistEventProjection;
 import ru.nsu.kosarev.db.artist.projections.ArtistImpresarioJenreProjection;
 import ru.nsu.kosarev.db.artist.projections.ArtistProjection;
 import ru.nsu.kosarev.db.artist.sortingfilter.ArtistSearchParams;
@@ -105,12 +104,13 @@ public class ArtistController {
         return artistService.getArtistsInJenre(jenreId);
     }
 
-    @PostMapping(value = "/artistsNotTakingPartInPeriod")
+    @PostMapping(value = "/artistsNotTakingPartInPeriod", produces = MediaType.APPLICATION_JSON_VALUE,
+        consumes = MediaType.APPLICATION_JSON_VALUE)
     public List<ArtistProjection> getArtistsNotTakingPartInPeriod(@RequestBody PeriodDTO periodDTO) {
         return artistService.getArtistsNotTakingPartInPeriod(periodDTO.getFrom(), periodDTO.getTo());
     }
 
-    @PostMapping(value = "/organizerEvent/{art_id}/{event_id}")
+    @PostMapping(value = "/artistEvent/create/{art_id}/{event_id}")
     public void bindArtistToEvent(
         @PathVariable("art_id") Integer artistId,
         @PathVariable("event_id") Integer eventId
@@ -118,22 +118,18 @@ public class ArtistController {
         artistService.bindArtistToEvent(artistId, eventId);
     }
 
-    @PostMapping(value = "/organizerEvent/get/{id}")
-    public List<ArtistWithEventsDTO> getEventsOfArtist(@PathVariable("id") Integer artistId) {
+    @PostMapping(value = "/artistEvent/get/{id}", produces = MediaType.APPLICATION_JSON_VALUE,
+        consumes = MediaType.APPLICATION_JSON_VALUE)
+    public List<ArtistEventProjection> getEventsOfArtist(@PathVariable("id") Integer artistId) {
         return artistService.getEventsOfArtist(artistId);
     }
 
-    @PostMapping(value = "/organizerEvent/delete/{art_id}/{event_id}")
+    @PostMapping(value = "/artistEvent/delete/{art_id}/{event_id}")
     public void deleteEventOfArtist(
         @PathVariable("art_id") Integer artistId,
         @PathVariable("event_id") Integer eventId
     ) {
         artistService.deleteEventOfArtist(artistId, eventId);
-    }
-
-    @PostMapping(value = "/artistsWithPlaces")
-    public void bindArtistsToPlacesInEvent(ArtistsEventPlacesDTO artistsEventPlacesDTO) {
-        artistService.bindArtistsToPlacesInEvent(artistsEventPlacesDTO);
     }
 
 }

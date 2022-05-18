@@ -1,28 +1,4 @@
-1) Транзакции!
-
-2) Тесты
-
-Crud:
-
-Artist -
-Building -
-Event -
-Impresario -
-Organizer -
-
-Crud nmk:
-
-Specific:
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-
-3) spring query method
+FINAL STEPS:
+cross join
+lateral join
+places and artist_event as creating linked entity

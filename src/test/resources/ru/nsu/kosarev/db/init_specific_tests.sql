@@ -25,12 +25,24 @@ INSERT INTO event(id, name, eventtype, eventplace, eventdate) VALUES (2, 'Opera 
 INSERT INTO event(id, name, eventtype, eventplace, eventdate) VALUES (3, 'Musicle of Pushkin', 4, 2, '2100-03-01');
 INSERT INTO event(id, name, eventtype, eventplace, eventdate) VALUES (4, 'Triller of Kolotushkin', 4, 2, '2100-04-01');
 
-INSERT INTO artist_event(artist, event) VALUES (1, 1);
-INSERT INTO artist_event(artist, event) VALUES (1, 2);
-INSERT INTO artist_event(artist, event) VALUES (1, 3);
-INSERT INTO artist_event(artist, event) VALUES (2, 2);
-INSERT INTO artist_event(artist, event) VALUES (2, 3);
-INSERT INTO artist_event(artist, event) VALUES (3, 3);
+INSERT INTO artist_event(id, artist, event) VALUES (1, 1, 1);
+INSERT INTO artist_event(id, artist, event) VALUES (2, 1, 2);
+INSERT INTO artist_event(id, artist, event) VALUES (3, 1, 3);
+INSERT INTO artist_event(id, artist, event) VALUES (4, 2, 2);
+INSERT INTO artist_event(id, artist, event) VALUES (5, 2, 3);
+INSERT INTO artist_event(id, artist, event) VALUES (6, 3, 3);
 
+INSERT INTO organizer(id, name, surname, birthdate) VALUES (1, 'Nikita', 'Kosarev', '2000-10-30');
+INSERT INTO organizer(id, name, surname, birthdate) VALUES (2, 'Marat', 'Pashentsev', '2000-05-24');
+INSERT INTO organizer(id, name, surname, birthdate) VALUES (3, 'Andrey', 'Nikolotov', '2000-12-31');
+INSERT INTO organizer(id, name, surname, birthdate) VALUES (4, 'Vasya', 'Pupkin', '2000-01-01');
 
+INSERT INTO organizer_event(organizer, event) VALUES (3, 1);
+INSERT INTO organizer_event(organizer, event) VALUES (4, 1);
+INSERT INTO organizer_event(organizer, event) VALUES (4, 2);
+INSERT INTO organizer_event(organizer, event) VALUES (1, 3);
+INSERT INTO organizer_event(organizer, event) VALUES (2, 4);
 
+INSERT INTO artist_place(artistevent, place) VALUES (3, 1);
+INSERT INTO artist_place(artistevent, place) VALUES (5, 2);
+INSERT INTO artist_place(artistevent, place) VALUES (6, 3);

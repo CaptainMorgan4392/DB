@@ -20,10 +20,16 @@ public class EventJDBCRepository {
     //6
     public List<EventProjection> getEventsInPeriodOrByOrganizer(Date from, Date to, Integer organizerId) {
         return jdbcTemplate.query(
-            "SELECT * " +
+            "SELECT DISTINCT ON(e.id) e.name as eventName, " +
+                "et.eventtype as eventType, " +
+                "b.name as buildingName, " +
+                "e.eventdate as eventDate " +
                 "FROM event e " +
                 "INNER JOIN organizer_event oe on e.id = oe.event " +
-                "WHERE e.eventdate BETWEEN ? AND ? OR oe.organizer = ?",
+                "INNER JOIN building b on b.id = e.eventplace " +
+                "INNER JOIN event_type et on et.id = e.eventtype " +
+                "WHERE e.eventdate BETWEEN ? AND ? OR oe.organizer = ? " +
+                "ORDER BY e.id",
             new EventProjectionRowMapper(),
             from,
             to,
@@ -34,7 +40,10 @@ public class EventJDBCRepository {
     //7
     public List<ArtistWithPlaceProjection> getArtistsWithPlaces(Integer eventId) {
         return jdbcTemplate.query(
-            "SELECT a.name, a.surname, a.birthdate, p.place " +
+            "SELECT a.name as artistName, " +
+                "a.surname as artistSurname, " +
+                "a.birthdate as artistBirthDate, " +
+                "p.place as artistPlace " +
                 "FROM event e " +
                 "INNER JOIN artist_event ae on e.id = ae.event " +
                 "INNER JOIN artist a on a.id = ae.artist " +

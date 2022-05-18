@@ -2,8 +2,6 @@ package ru.nsu.kosarev.db.organizer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.nsu.kosarev.db.organizer.dto.OrganizerDTO;
 import ru.nsu.kosarev.db.organizer.dto.OrganizerResponseDTO;
-import ru.nsu.kosarev.db.organizer.dto.OrganizerWithEventsDTO;
 import ru.nsu.kosarev.db.organizer.dto.PeriodDTO;
+import ru.nsu.kosarev.db.organizer.projection.OrganizerEventProjection;
 import ru.nsu.kosarev.db.organizer.projection.OrganizerWithEventCountProjection;
 import ru.nsu.kosarev.db.organizer.sortingfilter.OrganizerSearchParams;
 
@@ -82,7 +80,7 @@ public class OrganizerController {
         );
     }
 
-    @PostMapping(value = "/organizerEvent/{org_id}/{event_id}")
+    @PostMapping(value = "/organizerEvent/create/{org_id}/{event_id}")
     public void bindOrganizerToEvent(
         @PathVariable("org_id") Integer organizerId,
         @PathVariable("event_id") Integer eventId
@@ -90,12 +88,13 @@ public class OrganizerController {
         organizerService.bindOrganizerToEvent(organizerId, eventId);
     }
 
-    @GetMapping(value = "/organizerEvent/get/{id}")
-    public List<OrganizerWithEventsDTO> getEventsOfOrganizer(@PathVariable("id") Integer organizerId) {
+    @PostMapping(value = "/organizerEvent/get/{id}", produces = MediaType.APPLICATION_JSON_VALUE,
+        consumes = MediaType.APPLICATION_JSON_VALUE)
+    public List<OrganizerEventProjection> getEventsOfOrganizer(@PathVariable("id") Integer organizerId) {
         return organizerService.getEventsOfOrganizer(organizerId);
     }
 
-    @DeleteMapping(value = "/organizerEvent/delete/{org_id}/{event_id}")
+    @PostMapping(value = "/organizerEvent/delete/{org_id}/{event_id}")
     public void deleteEventOfOrganizer(
         @PathVariable("org_id") Integer organizerId,
         @PathVariable("event_id") Integer eventId

@@ -9,12 +9,10 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 import ru.nsu.kosarev.db.organizer.dto.OrganizerDTO;
 import ru.nsu.kosarev.db.organizer.dto.OrganizerResponseDTO;
-import ru.nsu.kosarev.db.organizer.dto.OrganizerWithEventsDTO;
+import ru.nsu.kosarev.db.organizer.projection.OrganizerEventProjection;
 import ru.nsu.kosarev.db.organizer.projection.OrganizerWithEventCountProjection;
-import ru.nsu.kosarev.db.organizer.projection.rowmapper.OrganizerWithEventCountProjectionRowMapper;
 import ru.nsu.kosarev.db.organizer.repository.OrganizerJDBCRepository;
 import ru.nsu.kosarev.db.organizer.repository.OrganizerRepository;
 import ru.nsu.kosarev.db.organizer.sortingfilter.OrganizerSearchParams;
@@ -87,10 +85,8 @@ public class OrganizerService {
         organizerJDBCRepository.bindOrganizerToEvent(organizerId, eventId);
     }
 
-    public List<OrganizerWithEventsDTO> getEventsOfOrganizer(Integer organizerId) {
-        //return organizerJDBCRepository.getEventsOfOrganizer(organizerId);
-
-        return null;
+    public List<OrganizerEventProjection> getEventsOfOrganizer(Integer organizerId) {
+        return organizerJDBCRepository.getEventsOfOrganizer(organizerId);
     }
 
     public void deleteEventOfOrganizer(Integer organizerId, Integer eventId) {

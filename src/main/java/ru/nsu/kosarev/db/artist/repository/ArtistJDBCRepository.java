@@ -6,10 +6,10 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import ru.nsu.kosarev.db.artist.dto.ArtistImpresarioJenreDto;
-import ru.nsu.kosarev.db.artist.dto.ArtistsEventPlacesDTO;
 import ru.nsu.kosarev.db.artist.projections.ArtistEventProjection;
 import ru.nsu.kosarev.db.artist.projections.ArtistImpresarioJenreProjection;
 import ru.nsu.kosarev.db.artist.projections.ArtistProjection;
+import ru.nsu.kosarev.db.artist.projections.rowmappers.ArtistEventProjectionRowMapper;
 import ru.nsu.kosarev.db.artist.projections.rowmappers.ArtistImpresarioJenreProjectionRowMapper;
 import ru.nsu.kosarev.db.artist.projections.rowmappers.ArtistProjectionRowMapper;
 
@@ -105,20 +105,48 @@ public class ArtistJDBCRepository {
     }
 
     public void bindArtistToEvent(Integer artistId, Integer eventId) {
-        //TODO
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        jdbcTemplate.update(connection -> {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                "INSERT INTO artist_event(artist, event) VALUES (?, ?)"
+            );
+
+            preparedStatement.setInt(1, artistId);
+            preparedStatement.setInt(2, eventId);
+
+            return preparedStatement;
+        }, keyHolder);
     }
 
     public List<ArtistEventProjection> getEventsOfArtist(Integer artistId) {
-        //TODO
-        return null;
+        return jdbcTemplate.query(
+            "SELECT a.name AS artistName, " +
+                "a.surname AS artistSurname, " +
+                "a.birthDate AS artistDate, " +
+                "e.name AS eventName, " +
+                "et.eventtype AS eventType, " +
+                "b.name AS eventPlace, " +
+                "e.eventdate AS eventDate " +
+                "FROM artist_event ae " +
+                "INNER JOIN artist a on ae.artist = a.id " +
+                "INNER JOIN event e on e.id = ae.event " +
+                "INNER JOIN building b on b.id = e.eventplace " +
+                "INNER JOIN event_type et on et.id = e.eventtype " +
+                "WHERE a.id = ? " +
+                "ORDER BY (ae.artist, ae.event)",
+            new ArtistEventProjectionRowMapper(),
+            artistId
+        );
     }
 
     public void deleteEventOfArtist(Integer artistId, Integer eventId) {
-        //TODO
-    }
-
-    public void bindArtistsToPlacesInEvent(ArtistsEventPlacesDTO artistsEventPlacesDTO) {
-        //TODO
+        jdbcTemplate.update(
+            "DELETE FROM artist_event " +
+                "WHERE artist = ? AND event = ?",
+            artistId,
+            eventId
+        );
     }
 
 }
