@@ -93,6 +93,10 @@ public class OrganizerService {
         organizerJDBCRepository.deleteEventOfOrganizer(organizerId, eventId);
     }
 
+    public List<OrganizerEventProjection> getEventsOfAllOrganizers() {
+        return organizerJDBCRepository.getEventsOfAllOrganizers();
+    }
+
     private Specification<Organizer> buildSpec(OrganizerSearchParams organizerSearchParams) {
         return new Specification<>() {
             @Nullable

@@ -84,4 +84,29 @@ public class OrganizerJDBCRepository {
         );
     }
 
+    public List<OrganizerEventProjection> getEventsOfAllOrganizers() {
+        return jdbcTemplate.query(
+            "SELECT o.name AS organizerName, " +
+                "o.surname AS organizerSurname, " +
+                "o.birthDate AS organizerDate, " +
+                "x.eventName AS eventName, " +
+                "x.eventType AS eventType, " +
+                "x.eventPlace AS eventPlace, " +
+                "x.eventDate AS eventDate " +
+                "FROM organizer o " +
+                "INNER JOIN LATERAL " +
+                "(SELECT oe.organizer as organizer, oe.event as event, " +
+                "e.name as eventName, " +
+                "et.eventtype as eventType, " +
+                "b.name AS eventPlace, " +
+                "e.eventDate as eventDate " +
+                "FROM organizer_event oe " +
+                "INNER JOIN event e on oe.event = e.id INNER JOIN event_type et on e.eventtype = et.id " +
+                "INNER JOIN building b ON e.eventplace = b.id WHERE o.id = oe.organizer) AS x " +
+                "ON TRUE " +
+                "ORDER BY (x.organizer, x.event)",
+            new OrganizerEventProjectionRowMapper()
+        );
+    }
+
 }

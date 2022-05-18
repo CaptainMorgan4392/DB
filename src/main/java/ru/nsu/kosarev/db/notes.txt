@@ -1,4 +1,4 @@
 FINAL STEPS:
 cross join
 lateral join
-places and artist_event as creating linked entity
+deploy

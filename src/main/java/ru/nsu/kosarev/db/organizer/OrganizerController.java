@@ -102,4 +102,9 @@ public class OrganizerController {
         organizerService.deleteEventOfOrganizer(organizerId, eventId);
     }
 
+    @PostMapping(value = "/allOrganizersEvents/")
+    public List<OrganizerEventProjection> getEventsOfAllOrganizers() {
+        return organizerService.getEventsOfAllOrganizers();
+    }
+
 }

@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 import ru.nsu.kosarev.db.DbApplication;
 import ru.nsu.kosarev.db.organizer.dto.PeriodDTO;
+import ru.nsu.kosarev.db.organizer.projection.OrganizerEventProjection;
 import ru.nsu.kosarev.db.organizer.projection.OrganizerWithEventCountProjection;
 
 import java.net.URI;
@@ -75,6 +76,36 @@ public class OrganizerSpecificIntegrationTest {
             assertEquals(birthDates.get(i), projections.get(i).getOrganizerBirthDate());
             assertEquals(eventCounts.get(i), projections.get(i).getEventCount());
         }
+    }
+
+    @Test
+    @Sql("../init_specific_tests.sql")
+    @Sql(scripts = "../clear_specific_tests.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    public void getEventsOfAllOrganizers() throws URISyntaxException {
+        final String baseUrl = "http://localhost:" + port + "/organizer/allOrganizersEvents/";
+        URI uri = new URI(baseUrl);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<Object> request = new HttpEntity<>(null, headers);
+
+        List<OrganizerEventProjection> projections = testRestTemplate.exchange(
+            uri,
+            HttpMethod.POST,
+            request,
+            new ParameterizedTypeReference<List<OrganizerEventProjection>>() {}
+        ).getBody();
+
+        projections.stream().forEach(projection -> {
+            System.out.println(projection.getOrganizerName());
+            System.out.println(projection.getOrganizerSurname());
+            System.out.println(projection.getOrganizerBirthDate());
+            System.out.println(projection.getEventName());
+            System.out.println(projection.getEventType());
+            System.out.println(projection.getEventPlace());
+            System.out.println(projection.getEventDate());
+        });
     }
 
 }
