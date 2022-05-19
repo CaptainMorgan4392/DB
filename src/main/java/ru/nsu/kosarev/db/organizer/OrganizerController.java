@@ -63,9 +63,7 @@ public class OrganizerController {
         return organizerService.saveOrganizer(organizerDTO);
     }
 
-    @PostMapping(value = "/delete/{id}",
-        produces = MediaType.APPLICATION_JSON_VALUE,
-        consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/delete/{id}")
     public void deleteOrganizer(@PathVariable("id") Integer organizerId) {
         organizerService.deleteOrganizer(organizerId);
     }
