@@ -68,16 +68,13 @@ public class BuildingController {
         return buildingService.saveBuilding(buildingDTO);
     }
 
-    @PostMapping(value = "/delete/{id}",
-        produces = MediaType.APPLICATION_JSON_VALUE,
-        consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/delete/{id}")
     public void deleteBuilding(@PathVariable("id") Integer buildingId) {
         buildingService.deleteBuilding(buildingId);
     }
 
     @PostMapping(value = "/buildingsWithEvents",
-        produces = MediaType.APPLICATION_JSON_VALUE,
-        consumes = MediaType.APPLICATION_JSON_VALUE)
+        produces = MediaType.APPLICATION_JSON_VALUE)
     List<BuildingEventDTO> fetchBuildingsWithEvents() {
         return buildingService.fetchBuildingsWithEvents();
     }

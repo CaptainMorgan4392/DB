@@ -133,7 +133,9 @@ public class ArtistController {
         artistService.deleteEventOfArtist(artistId, eventId);
     }
 
-    @PostMapping(value = "/artistsTogether")
+    @PostMapping(value = "/artistsTogether",
+        produces = MediaType.APPLICATION_JSON_VALUE,
+        consumes = MediaType.APPLICATION_JSON_VALUE)
     public List<ArtistsTogetherProjection> getArtistsTakingPartTogether() {
         return artistService.getArtistsTakingPartTogether();
     }

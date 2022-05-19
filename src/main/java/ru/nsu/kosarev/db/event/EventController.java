@@ -63,14 +63,14 @@ public class EventController {
         return eventService.saveEvent(eventDTO);
     }
 
-    @PostMapping(value = "/delete/{id}",
-        produces = MediaType.APPLICATION_JSON_VALUE,
-        consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/delete/{id}")
     public void deleteEvent(@PathVariable("id") Integer eventId) {
         eventService.deleteEvent(eventId);
     }
 
-    @PostMapping(value = "/getEventsInPeriodOrByOrganizer")
+    @PostMapping(value = "/getEventsInPeriodOrByOrganizer",
+        produces = MediaType.APPLICATION_JSON_VALUE,
+        consumes = MediaType.APPLICATION_JSON_VALUE)
     public List<EventProjection> getEventsInPeriodOrByOrganizer(@RequestBody PeriodOrganizerDTO periodOrganizerDTO) {
         return eventService.getEventsInPeriodOrByOrganizer(
             periodOrganizerDTO.getFrom(),
@@ -79,12 +79,14 @@ public class EventController {
         );
     }
 
-    @PostMapping(value = "/getArtistsWithPlaces/{id}")
+    @PostMapping(value = "/getArtistsWithPlaces/{id}",
+        produces = MediaType.APPLICATION_JSON_VALUE)
     public List<ArtistWithPlaceProjection> getArtistsWithPlaces(@PathVariable("id") Integer eventId) {
         return eventService.getArtistsWithPlaces(eventId);
     }
 
-    @PostMapping(value = "/getEventsInBuilding/{id}")
+    @PostMapping(value = "/getEventsInBuilding/{id}",
+        produces = MediaType.APPLICATION_JSON_VALUE)
     public List<EventProjection> getEventsInBuilding(@PathVariable("id") Integer buildingId) {
         return eventService.getEventsInBuilding(buildingId);
     }

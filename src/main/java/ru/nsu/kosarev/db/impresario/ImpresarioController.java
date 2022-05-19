@@ -70,22 +70,28 @@ public class ImpresarioController {
         impresarioService.deleteImpresario(impresarioId);
     }
 
-    @PostMapping(value = "/getArtistsInMultipleJenres/{id}")
+    @PostMapping(value = "/getArtistsInMultipleJenres/{id}",
+        produces = MediaType.APPLICATION_JSON_VALUE,
+        consumes = MediaType.APPLICATION_JSON_VALUE)
     public List<ImpresarioArtistProjectionWithoutIds> getArtistsInMultipleJenres(@PathVariable("id") Integer impresarioId) {
         return impresarioService.getArtistsInMultipleJenres(impresarioId);
     }
 
-    @PostMapping(value = "/getArtistsOfAllImpresarios")
+    @PostMapping(value = "/getArtistsOfAllImpresarios",
+        produces = MediaType.APPLICATION_JSON_VALUE,
+        consumes = MediaType.APPLICATION_JSON_VALUE)
     public List<ArtistsOfAllImpresariosDTO> getArtistsOfAllImpresarios() {
         return impresarioService.getArtistsOfAllImpresarios();
     }
 
-    @PostMapping(value = "/getImpresariosOfArtist/{id}")
+    @PostMapping(value = "/getImpresariosOfArtist/{id}",
+        produces = MediaType.APPLICATION_JSON_VALUE)
     public List<ImpresarioProjection> getImpresariosOfArtist(@PathVariable("id") Integer artistId) {
         return impresarioService.getImpresariosOfArtist(artistId);
     }
 
-    @PostMapping(value = "/getImpresariosInJenre/{id}")
+    @PostMapping(value = "/getImpresariosInJenre/{id}",
+        produces = MediaType.APPLICATION_JSON_VALUE)
     public List<ImpresarioProjection> getImpresariosInJenre(@PathVariable("id") Integer jenreId) {
         return impresarioService.getImpresariosInJenre(jenreId);
     }

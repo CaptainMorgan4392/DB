@@ -68,7 +68,9 @@ public class OrganizerController {
         organizerService.deleteOrganizer(organizerId);
     }
 
-    @PostMapping(value = "/getOrganizersWithEventCountsInPeriod")
+    @PostMapping(value = "/getOrganizersWithEventCountsInPeriod",
+        produces = MediaType.APPLICATION_JSON_VALUE,
+        consumes = MediaType.APPLICATION_JSON_VALUE)
     public List<OrganizerWithEventCountProjection> getOrganizersWithEventCountsInPeriod(
         @RequestBody PeriodDTO periodDTO
     ) {
@@ -100,7 +102,9 @@ public class OrganizerController {
         organizerService.deleteEventOfOrganizer(organizerId, eventId);
     }
 
-    @PostMapping(value = "/allOrganizersEvents/")
+    @PostMapping(value = "/allOrganizersEvents/",
+        produces = MediaType.APPLICATION_JSON_VALUE,
+        consumes = MediaType.APPLICATION_JSON_VALUE)
     public List<OrganizerEventProjection> getEventsOfAllOrganizers() {
         return organizerService.getEventsOfAllOrganizers();
     }
