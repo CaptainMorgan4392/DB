@@ -16,6 +16,8 @@ import lombok.Setter;
 @Setter
 public class ArtistImpresarioJenreProjection {
 
+    private Integer artistId;
+
     @JsonProperty("artistName")
     private String artistName;
 
@@ -25,6 +27,8 @@ public class ArtistImpresarioJenreProjection {
     @JsonProperty("artistBirthDate")
     private String artistBirthDate;
 
+    private Integer impresarioId;
+
     @JsonProperty("impresarioName")
     private String impresarioName;
 
@@ -33,6 +37,8 @@ public class ArtistImpresarioJenreProjection {
 
     @JsonProperty("impresarioBirthDate")
     private String impresarioBirthDate;
+
+    private Integer jenreId;
 
     @JsonProperty("jenre")
     private String jenre;

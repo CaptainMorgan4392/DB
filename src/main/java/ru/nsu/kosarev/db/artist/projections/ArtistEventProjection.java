@@ -10,11 +10,15 @@ import lombok.Setter;
 @Setter
 public class ArtistEventProjection {
 
+    private Integer artistId;
+
     private String artistName;
 
     private String artistSurname;
 
     private String artistBirthDate;
+
+    private Integer eventId;
 
     private String eventName;
 

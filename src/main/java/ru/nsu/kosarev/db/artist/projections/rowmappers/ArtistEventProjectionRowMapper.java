@@ -14,9 +14,11 @@ public class ArtistEventProjectionRowMapper implements RowMapper<ArtistEventProj
     @Override
     public ArtistEventProjection mapRow(ResultSet rs, int rowNum) throws SQLException {
         return new ArtistEventProjection(
+            rs.getInt("artistId"),
             rs.getString("artistName"),
             rs.getString("artistSurname"),
             DateTimeFormatter.getFormattedDateFromTimestamp(rs.getDate("artistDate")),
+            rs.getInt("eventId"),
             rs.getString("eventName"),
             rs.getString("eventType"),
             rs.getString("eventPlace"),

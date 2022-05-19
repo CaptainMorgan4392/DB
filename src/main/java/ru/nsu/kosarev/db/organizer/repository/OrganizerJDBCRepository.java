@@ -56,9 +56,12 @@ public class OrganizerJDBCRepository {
 
     public List<OrganizerEventProjection> getEventsOfOrganizer(Integer organizerId) {
         return jdbcTemplate.query(
-            "SELECT o.name AS organizerName, " +
+            "SELECT " +
+                "o.id AS organizerId, " +
+                "o.name AS organizerName, " +
                 "o.surname AS organizerSurname, " +
                 "o.birthDate AS organizerDate, " +
+                "e.id AS eventId, " +
                 "e.name AS eventName, " +
                 "et.eventtype AS eventType, " +
                 "b.name AS eventPlace, " +
@@ -86,9 +89,10 @@ public class OrganizerJDBCRepository {
 
     public List<OrganizerEventProjection> getEventsOfAllOrganizers() {
         return jdbcTemplate.query(
-            "SELECT o.name AS organizerName, " +
+            "SELECT o.id AS organizerId, o.name AS organizerName, " +
                 "o.surname AS organizerSurname, " +
                 "o.birthDate AS organizerDate, " +
+                "x.event AS eventId," +
                 "x.eventName AS eventName, " +
                 "x.eventType AS eventType, " +
                 "x.eventPlace AS eventPlace, " +

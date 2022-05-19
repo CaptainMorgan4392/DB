@@ -14,9 +14,11 @@ public class OrganizerEventProjectionRowMapper implements RowMapper<OrganizerEve
     @Override
     public OrganizerEventProjection mapRow(ResultSet rs, int rowNum) throws SQLException {
         return new OrganizerEventProjection(
+            rs.getInt("organizerId"),
             rs.getString("organizerName"),
             rs.getString("organizerSurname"),
             DateTimeFormatter.getFormattedDateFromTimestamp(rs.getDate("organizerDate")),
+            rs.getInt("eventId"),
             rs.getString("eventName"),
             rs.getString("eventType"),
             rs.getString("eventPlace"),

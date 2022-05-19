@@ -14,12 +14,15 @@ public class ArtistImpresarioJenreProjectionRowMapper implements RowMapper<Artis
     @Override
     public ArtistImpresarioJenreProjection mapRow(ResultSet rs, int rowNum) throws SQLException {
         return new ArtistImpresarioJenreProjection(
+            rs.getInt("artistId"),
             rs.getString("artistName"),
             rs.getString("artistSurname"),
             DateTimeFormatter.getFormattedDateFromTimestamp(rs.getDate("artistDate")),
+            rs.getInt("impresarioId"),
             rs.getString("impresarioName"),
             rs.getString("impresarioSurname"),
             DateTimeFormatter.getFormattedDateFromTimestamp(rs.getDate("impresarioDate")),
+            rs.getInt("jenreId"),
             rs.getString("jenreName")
         );
     }

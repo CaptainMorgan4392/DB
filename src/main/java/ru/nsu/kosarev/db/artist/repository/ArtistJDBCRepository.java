@@ -43,13 +43,13 @@ public class ArtistJDBCRepository {
 
     public List<ArtistImpresarioJenreProjection> getArtistsWithImpresariosInJenre() {
         return jdbcTemplate.query(
-            "SELECT a.name AS artistName, " +
+            "SELECT a.id as artistId, a.name AS artistName, " +
                 "a.surname AS artistSurname, " +
                 "a.birthDate AS artistDate, " +
-                "i.name AS impresarioName, " +
+                "i.id as impresarioId, i.name AS impresarioName, " +
                 "i.surname AS impresarioSurname, " +
                 "i.birthDate AS impresarioDate, " +
-                "j.name AS jenreName " +
+                "j.id as jenreId, j.name AS jenreName " +
                 "FROM impresario_artist_jenre iaj " +
                 "INNER JOIN artist a on iaj.artist = a.id " +
                 "INNER JOIN impresario i on i.id = iaj.impresario " +
@@ -123,10 +123,10 @@ public class ArtistJDBCRepository {
 
     public List<ArtistEventProjection> getEventsOfArtist(Integer artistId) {
         return jdbcTemplate.query(
-            "SELECT a.name AS artistName, " +
+            "SELECT a.id AS artistId, a.name AS artistName, " +
                 "a.surname AS artistSurname, " +
                 "a.birthDate AS artistDate, " +
-                "e.name AS eventName, " +
+                "e.id AS eventId, e.name AS eventName, " +
                 "et.eventtype AS eventType, " +
                 "b.name AS eventPlace, " +
                 "e.eventdate AS eventDate " +
