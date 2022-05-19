@@ -15,6 +15,7 @@ import ru.nsu.kosarev.db.artist.dto.ArtistResponseDTO;
 import ru.nsu.kosarev.db.artist.projections.ArtistEventProjection;
 import ru.nsu.kosarev.db.artist.projections.ArtistImpresarioJenreProjection;
 import ru.nsu.kosarev.db.artist.projections.ArtistProjection;
+import ru.nsu.kosarev.db.artist.projections.ArtistsTogetherProjection;
 import ru.nsu.kosarev.db.artist.repository.ArtistJDBCRepository;
 import ru.nsu.kosarev.db.artist.repository.ArtistRepository;
 import ru.nsu.kosarev.db.artist.sortingfilter.ArtistSearchParams;
@@ -116,6 +117,10 @@ public class ArtistService {
 
     void deleteEventOfArtist(Integer artistId, Integer eventId) {
         artistJDBCRepository.deleteEventOfArtist(artistId, eventId);
+    }
+
+    List<ArtistsTogetherProjection> getArtistsTakingPartTogether() {
+        return artistJDBCRepository.getArtistsTakingPartTogether();
     }
 
     private Specification<Artist> buildSpec(ArtistSearchParams artistSearchParams) {

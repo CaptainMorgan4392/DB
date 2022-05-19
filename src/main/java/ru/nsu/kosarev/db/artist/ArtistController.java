@@ -14,6 +14,7 @@ import ru.nsu.kosarev.db.artist.dto.PeriodDTO;
 import ru.nsu.kosarev.db.artist.projections.ArtistEventProjection;
 import ru.nsu.kosarev.db.artist.projections.ArtistImpresarioJenreProjection;
 import ru.nsu.kosarev.db.artist.projections.ArtistProjection;
+import ru.nsu.kosarev.db.artist.projections.ArtistsTogetherProjection;
 import ru.nsu.kosarev.db.artist.sortingfilter.ArtistSearchParams;
 
 import java.util.List;
@@ -130,6 +131,11 @@ public class ArtistController {
         @PathVariable("event_id") Integer eventId
     ) {
         artistService.deleteEventOfArtist(artistId, eventId);
+    }
+
+    @PostMapping(value = "/artistsTogether")
+    public List<ArtistsTogetherProjection> getArtistsTakingPartTogether() {
+        return artistService.getArtistsTakingPartTogether();
     }
 
 }

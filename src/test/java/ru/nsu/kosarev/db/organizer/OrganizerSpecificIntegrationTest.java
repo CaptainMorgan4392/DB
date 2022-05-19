@@ -97,15 +97,27 @@ public class OrganizerSpecificIntegrationTest {
             new ParameterizedTypeReference<List<OrganizerEventProjection>>() {}
         ).getBody();
 
-        projections.stream().forEach(projection -> {
-            System.out.println(projection.getOrganizerName());
-            System.out.println(projection.getOrganizerSurname());
-            System.out.println(projection.getOrganizerBirthDate());
-            System.out.println(projection.getEventName());
-            System.out.println(projection.getEventType());
-            System.out.println(projection.getEventPlace());
-            System.out.println(projection.getEventDate());
-        });
+        List<String> organizerNames = Arrays.asList("Nikita", "Marat", "Andrey", "Vasya", "Vasya");
+        List<String> organizerSurnames = Arrays.asList("Kosarev", "Pashentsev", "Nikolotov", "Pupkin", "Pupkin");
+        List<String> organizerBirthDates = Arrays.asList("30/10/2000", "24/05/2000", "31/12/2000", "01/01/2000", "01/01/2000");
+        List<String> eventNames = Arrays.asList("Musicle of Pushkin", "Triller of Kolotushkin", "Concert of Pushkin",
+            "Concert of Pushkin", "Opera of Kolotushkin");
+        List<String> eventTypes = Arrays.asList("FILM", "FILM", "CONCERT", "CONCERT", "PERFORMANCE");
+        List<String> eventPlaces = Arrays.asList("Kakoi-to kinoteatr", "Kakoi-to kinoteatr", "Kakoi-to teatr",
+            "Kakoi-to teatr", "Kakoi-to teatr");
+        List<String> eventDates = Arrays.asList("01/03/2100", "01/04/2100", "01/01/2100", "01/01/2100", "01/02/2100");
+
+        assertEquals(5, projections.size());
+
+        for (int i = 0; i < 5; ++i) {
+            assertEquals(organizerNames.get(i), projections.get(i).getOrganizerName());
+            assertEquals(organizerSurnames.get(i), projections.get(i).getOrganizerSurname());
+            assertEquals(organizerBirthDates.get(i), projections.get(i).getOrganizerBirthDate());
+            assertEquals(eventNames.get(i), projections.get(i).getEventName());
+            assertEquals(eventTypes.get(i), projections.get(i).getEventType());
+            assertEquals(eventPlaces.get(i), projections.get(i).getEventPlace());
+            assertEquals(eventDates.get(i), projections.get(i).getEventDate());
+        }
     }
 
 }

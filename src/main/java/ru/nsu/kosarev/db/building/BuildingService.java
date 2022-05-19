@@ -7,6 +7,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.nsu.kosarev.db.building.dto.BuildingDTO;
+import ru.nsu.kosarev.db.building.dto.BuildingEventDTO;
 import ru.nsu.kosarev.db.building.dto.BuildingResponseDTO;
 import ru.nsu.kosarev.db.building.entity.Building;
 import ru.nsu.kosarev.db.building.entity.Cinema;
@@ -14,6 +15,8 @@ import ru.nsu.kosarev.db.building.entity.ConcertSquare;
 import ru.nsu.kosarev.db.building.entity.CulturePalace;
 import ru.nsu.kosarev.db.building.entity.Stage;
 import ru.nsu.kosarev.db.building.entity.Theatre;
+import ru.nsu.kosarev.db.building.projections.BuildingEventProjection;
+import ru.nsu.kosarev.db.building.repository.BuildingJDBCRepository;
 import ru.nsu.kosarev.db.building.repository.BuildingRepository;
 import ru.nsu.kosarev.db.building.repository.CinemaRepository;
 import ru.nsu.kosarev.db.building.repository.ConcertSquareRepository;
@@ -46,6 +49,9 @@ public class BuildingService {
 
     @Autowired
     private BuildingRepository buildingRepository;
+
+    @Autowired
+    private BuildingJDBCRepository buildingJDBCRepository;
 
     @Autowired
     private CinemaRepository cinemaRepository;
@@ -211,9 +217,40 @@ public class BuildingService {
         ).flatMap(i -> i).collect(Collectors.toList());
     }
 
+    List<BuildingEventDTO> fetchBuildingsWithEvents() {
+        List<BuildingResponseDTO> buildingResponseDTOS = fetchBuildingsList(new BuildingSearchParams());
+
+        List<BuildingEventProjection> buildingEventProjections = buildingJDBCRepository.getEventsInBuildings(
+            buildingResponseDTOS.stream()
+                .map(BuildingResponseDTO::getId)
+                .collect(Collectors.toList())
+        );
+
+        return buildingResponseDTOS.stream()
+            .map(buildingResponseDTO -> {
+                List<BuildingEventProjection> buildingEventProjectionsOfConcreteBuilding =
+                    buildingEventProjections.stream()
+                        .filter(it -> buildingResponseDTO.getId().equals(it.getBuildingId()))
+                        .collect(Collectors.toList());
+
+                return new BuildingEventDTO(
+                    buildingResponseDTO.getName(),
+                    buildingResponseDTO.getCapacity(),
+                    buildingResponseDTO.getDiagonal(),
+                    buildingResponseDTO.getAddress(),
+                    buildingResponseDTO.getBuildingType(),
+                    buildingEventProjectionsOfConcreteBuilding
+                );
+            }).collect(Collectors.toList());
+    }
+
     @Transactional
     void deleteBuilding(Integer buildingId) {
         buildingRepository.deleteById(buildingId);
+    }
+
+    public Integer fetchEventPlaceByEventId(Integer eventId) {
+        return buildingJDBCRepository.fetchEventPlaceByEventId(eventId);
     }
 
     private List<BuildingResponseDTO> fetchPageFromCommonList(
@@ -271,7 +308,5 @@ public class BuildingService {
             }
         };
     }
-
-
 
 }

@@ -205,6 +205,34 @@ public class BuildingCrudIntegrationTest {
     }
 
     @Test
+    @Sql("../init_specific_tests.sql")
+    @Sql(scripts = "../clear_specific_tests.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    public void fetchEventPlaceByEventId() throws URISyntaxException {
+        int eventId = 1;
+
+        final String baseUrl = "http://localhost:" + port + "/building/fetch/fetchByEventId/" + eventId;
+        URI uri = new URI(baseUrl);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<Object> request = new HttpEntity<>(
+            null,
+            headers
+        );
+
+        ResponseEntity<Integer> responseEntity =
+            testRestTemplate.exchange(
+                uri,
+                HttpMethod.POST,
+                request,
+                Integer.class
+            );
+
+        assertEquals(1, responseEntity.getBody());
+    }
+
+    @Test
     @Sql("init_building.sql")
     @Sql(scripts = "clear_building.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void create() throws URISyntaxException {

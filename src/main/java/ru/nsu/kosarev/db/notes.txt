@@ -1,4 +1,2 @@
 FINAL STEPS:
 cross join
-lateral join
-deploy

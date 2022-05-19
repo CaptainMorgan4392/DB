@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.nsu.kosarev.db.building.dto.BuildingDTO;
+import ru.nsu.kosarev.db.building.dto.BuildingEventDTO;
 import ru.nsu.kosarev.db.building.dto.BuildingResponseDTO;
 import ru.nsu.kosarev.db.building.sortingfilter.BuildingSearchParams;
 
@@ -49,6 +50,13 @@ public class BuildingController {
         return buildingService.fetchBuildingsList(buildingSearchParams);
     }
 
+    @PostMapping(value = "/fetch/fetchByEventId/{id}",
+        produces = MediaType.APPLICATION_JSON_VALUE,
+        consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Integer fetchEventPlaceByEventId(@PathVariable("id") Integer eventId) {
+        return buildingService.fetchEventPlaceByEventId(eventId);
+    }
+
     @PostMapping(value = "/update",
         produces = MediaType.APPLICATION_JSON_VALUE,
         consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -65,6 +73,13 @@ public class BuildingController {
         consumes = MediaType.APPLICATION_JSON_VALUE)
     public void deleteBuilding(@PathVariable("id") Integer buildingId) {
         buildingService.deleteBuilding(buildingId);
+    }
+
+    @PostMapping(value = "/buildingsWithEvents",
+        produces = MediaType.APPLICATION_JSON_VALUE,
+        consumes = MediaType.APPLICATION_JSON_VALUE)
+    List<BuildingEventDTO> fetchBuildingsWithEvents() {
+        return buildingService.fetchBuildingsWithEvents();
     }
 
 }

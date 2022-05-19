@@ -9,9 +9,11 @@ import ru.nsu.kosarev.db.artist.dto.ArtistImpresarioJenreDto;
 import ru.nsu.kosarev.db.artist.projections.ArtistEventProjection;
 import ru.nsu.kosarev.db.artist.projections.ArtistImpresarioJenreProjection;
 import ru.nsu.kosarev.db.artist.projections.ArtistProjection;
+import ru.nsu.kosarev.db.artist.projections.ArtistsTogetherProjection;
 import ru.nsu.kosarev.db.artist.projections.rowmappers.ArtistEventProjectionRowMapper;
 import ru.nsu.kosarev.db.artist.projections.rowmappers.ArtistImpresarioJenreProjectionRowMapper;
 import ru.nsu.kosarev.db.artist.projections.rowmappers.ArtistProjectionRowMapper;
+import ru.nsu.kosarev.db.artist.projections.rowmappers.ArtistsTogetherProjectionRowMapper;
 
 import java.sql.PreparedStatement;
 import java.util.Date;
@@ -146,6 +148,36 @@ public class ArtistJDBCRepository {
                 "WHERE artist = ? AND event = ?",
             artistId,
             eventId
+        );
+    }
+
+    public List<ArtistsTogetherProjection> getArtistsTakingPartTogether() {
+        return jdbcTemplate.query(
+            "WITH artist_cartesian AS ( " +
+                "SELECT a1.id as firstArtistId, " +
+                "a1.name as firstArtistName, " +
+                "a1.surname  as firstArtistSurname, " +
+                "a1.birthdate as firstArtistDate, " +
+                "a2.id as secondArtistId, " +
+                "a2.name as secondArtistName, " +
+                "a2.surname as secondArtistSurname, " +
+                "a2.birthdate as secondArtistDate " +
+                "FROM artist a1, artist a2 " +
+                "WHERE a1.id < a2.id) " +
+                "SELECT * " +
+                "FROM artist_cartesian " +
+                "INNER JOIN LATERAL " +
+                "(SELECT count(*) as counter FROM " +
+                "(SELECT ae.event as firstEvent " +
+                "FROM artist_event ae " +
+                "WHERE ae.artist = artist_cartesian.firstArtistId " +
+                "INTERSECT " +
+                "SELECT ae.event as firstEvent " +
+                "FROM artist_event ae " +
+                "WHERE ae.artist = artist_cartesian.secondArtistId " +
+                ") as intersection) cnt ON TRUE " +
+                "WHERE counter > 0",
+            new ArtistsTogetherProjectionRowMapper()
         );
     }
 
