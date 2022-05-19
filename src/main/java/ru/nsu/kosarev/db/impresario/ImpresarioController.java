@@ -65,9 +65,7 @@ public class ImpresarioController {
         return impresarioService.saveImpresario(impresarioDTO);
     }
 
-    @PostMapping(value = "/delete/{id}",
-        produces = MediaType.APPLICATION_JSON_VALUE,
-        consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/delete/{id}")
     public void deleteImpresario(@PathVariable("id") Integer impresarioId) {
         impresarioService.deleteImpresario(impresarioId);
     }
